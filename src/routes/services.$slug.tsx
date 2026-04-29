@@ -82,7 +82,7 @@ function ServiceDetailPage() {
               <div>
                 <div className="label-eyebrow mb-4">Benefits</div>
                 <ul className="space-y-3">
-                  {service.benefits.map((b) => (
+                  {service.benefits.map((b: string) => (
                     <li key={b} className="flex items-start gap-3 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> <span>{b}</span>
                     </li>
@@ -92,7 +92,7 @@ function ServiceDetailPage() {
               <div>
                 <div className="label-eyebrow mb-4">What's included</div>
                 <ul className="space-y-3">
-                  {service.included.map((i) => (
+                  {service.included.map((i: string) => (
                     <li key={i} className="flex items-start gap-3 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> <span>{i}</span>
                     </li>
