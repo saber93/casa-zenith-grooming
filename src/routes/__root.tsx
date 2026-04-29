@@ -42,8 +42,8 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Casa — Premium Gents Grooming" },
       { name: "twitter:description", content: "Premium gents grooming, barber, and skincare in one place. Book your appointment online." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Omip0M08sHOuvGFP8X6WMHRYkiM2/social-images/social-1777470054663-WhatsApp_Image_2026-04-28_at_2.09.27_PM.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Omip0M08sHOuvGFP8X6WMHRYkiM2/social-images/social-1777470054663-WhatsApp_Image_2026-04-28_at_2.09.27_PM.webp" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3a6ef6dc-e4d5-4779-9934-9f3882a338f0" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3a6ef6dc-e4d5-4779-9934-9f3882a338f0" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
