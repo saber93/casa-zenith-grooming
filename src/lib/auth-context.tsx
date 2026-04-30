@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { hasSupabaseClientEnv, supabase } from "@/integrations/supabase/client";
 
 export type AuthCtx = {
   user: User | null;
@@ -23,37 +23,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(false);
       return;
     }
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", uid)
-      .eq("role", "admin")
-      .maybeSingle();
-    setIsAdmin(!!data);
+    try {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", uid)
+        .eq("role", "admin")
+        .maybeSingle();
+      setIsAdmin(!!data);
+    } catch (error) {
+      console.error("[Auth] Unable to check admin role.", error);
+      setIsAdmin(false);
+    }
   };
 
   useEffect(() => {
+    if (!hasSupabaseClientEnv()) {
+      console.warn("[Auth] Supabase browser env is missing; admin auth is disabled.");
+      setLoading(false);
+      setIsAdmin(false);
+      return;
+    }
+
     // Set up listener BEFORE getSession (per Supabase guidance).
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      // Defer admin check to avoid recursion inside auth callback.
-      setTimeout(() => {
-        checkAdmin(s?.user?.id);
-      }, 0);
-    });
+    try {
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+        setSession(s);
+        // Defer admin check to avoid recursion inside auth callback.
+        setTimeout(() => {
+          checkAdmin(s?.user?.id);
+        }, 0);
+      });
 
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      checkAdmin(s?.user?.id).finally(() => setLoading(false));
-    });
+      supabase.auth
+        .getSession()
+        .then(({ data: { session: s } }) => {
+          setSession(s);
+          checkAdmin(s?.user?.id).finally(() => setLoading(false));
+        })
+        .catch((error) => {
+          console.error("[Auth] Unable to load session.", error);
+          setLoading(false);
+        });
 
-    return () => sub.subscription.unsubscribe();
+      return () => sub.subscription.unsubscribe();
+    } catch (error) {
+      console.error("[Auth] Supabase auth initialization failed.", error);
+      setLoading(false);
+      return;
+    }
   }, []);
 
   const refreshAdmin = async () => {
+    if (!hasSupabaseClientEnv()) return;
     await checkAdmin(session?.user?.id);
   };
   const signOut = async () => {
+    if (!hasSupabaseClientEnv()) return;
     await supabase.auth.signOut();
   };
 

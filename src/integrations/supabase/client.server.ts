@@ -5,10 +5,16 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
 
-const getSupabaseUrl = () => process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const getSupabaseUrl = () =>
+  process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
 
 const getSupabasePublishableKey = () =>
-  process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  process.env.SUPABASE_PUBLISHABLE_KEY ||
+  process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export function getSupabasePublicEnv() {
   const SUPABASE_URL = getSupabaseUrl();
@@ -18,7 +24,9 @@ export function getSupabasePublicEnv() {
     const missing = [
       ...(!SUPABASE_URL ? ["SUPABASE_URL or VITE_SUPABASE_URL"] : []),
       ...(!SUPABASE_PUBLISHABLE_KEY
-        ? ["SUPABASE_PUBLISHABLE_KEY or VITE_SUPABASE_PUBLISHABLE_KEY"]
+        ? [
+            "SUPABASE_PUBLISHABLE_KEY, VITE_SUPABASE_PUBLISHABLE_KEY, SUPABASE_ANON_KEY, or VITE_SUPABASE_ANON_KEY",
+          ]
         : []),
     ];
     const message = `Missing Supabase environment variable(s): ${missing.join(", ")}.`;
