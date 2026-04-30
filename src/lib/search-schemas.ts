@@ -9,6 +9,6 @@ export const reservationSearchValidator = zodValidator(reservationSearchSchema);
 
 // /login redirect target
 export const loginSearchSchema = z.object({
-  redirect: fallback(z.string(), "").default(""),
+  redirect: z.string().optional(),
 });
 export const loginSearchValidator = zodValidator(loginSearchSchema);

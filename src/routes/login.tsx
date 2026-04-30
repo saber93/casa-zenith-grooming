@@ -17,5 +17,5 @@ export const Route = createFileRoute("/login")({
 
 function LoginRouteComponent() {
   const { redirect } = Route.useSearch();
-  return <LoginPage lang="en" redirect={redirect} />;
+  return <LoginPage lang="en" redirect={redirect ?? ""} />;
 }

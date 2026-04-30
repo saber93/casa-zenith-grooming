@@ -17,5 +17,5 @@ export const Route = createFileRoute("/ar/login")({
 
 function ArLoginRouteComponent() {
   const { redirect } = Route.useSearch();
-  return <LoginPage lang="ar" redirect={redirect} />;
+  return <LoginPage lang="ar" redirect={redirect ?? ""} />;
 }
