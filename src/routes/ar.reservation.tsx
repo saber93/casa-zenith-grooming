@@ -4,19 +4,19 @@ import { listBarbers, listServices } from "@/server/casa.functions";
 import { buildPageHead, pageSeoCopy } from "@/lib/seo";
 import { reservationSearchValidator } from "@/lib/search-schemas";
 
-export const Route = createFileRoute("/reservation")({
+export const Route = createFileRoute("/ar/reservation")({
   validateSearch: reservationSearchValidator,
   loader: async () => {
     const [services, barbers] = await Promise.all([listServices(), listBarbers()]);
     return { services, barbers };
   },
   head: () => {
-    const seo = pageSeoCopy("en", "reservation");
-    return buildPageHead({ lang: "en", pathWithoutLocale: "/reservation", ...seo });
+    const seo = pageSeoCopy("ar", "reservation");
+    return buildPageHead({ lang: "ar", pathWithoutLocale: "/reservation", ...seo });
   },
   component: () => {
     const { services, barbers } = Route.useLoaderData();
     const { service } = Route.useSearch();
-    return <ReservationPage lang="en" services={services} barbers={barbers} presetSlug={service} />;
+    return <ReservationPage lang="ar" services={services} barbers={barbers} presetSlug={service} />;
   },
 });
