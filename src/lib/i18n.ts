@@ -1,0 +1,381 @@
+// Bilingual core: language detection, route helpers, UI string dictionary.
+// Routes use TanStack's optional `{-$locale}` segment: `undefined` => English, "ar" => Arabic.
+
+export type Lang = "en" | "ar";
+
+export const LANGS: Lang[] = ["en", "ar"];
+export const DEFAULT_LANG: Lang = "en";
+export const SITE_URL = "https://casa-zenith-grooming.lovable.app";
+
+export const isLang = (v: unknown): v is Lang => v === "en" || v === "ar";
+
+export const langFromLocale = (locale: string | undefined): Lang =>
+  locale === "ar" ? "ar" : "en";
+
+export const localeForLang = (lang: Lang): string | undefined =>
+  lang === "ar" ? "ar" : undefined;
+
+export const dirForLang = (lang: Lang): "ltr" | "rtl" =>
+  lang === "ar" ? "rtl" : "ltr";
+
+// Build a public URL for a path in a given language.
+// pathWithoutLocale always starts with "/" (e.g. "/services", "/services/قص-الشعر").
+export const localePath = (lang: Lang, pathWithoutLocale: string): string => {
+  const clean = pathWithoutLocale === "/" ? "" : pathWithoutLocale;
+  return lang === "ar" ? `/ar${clean || ""}` || "/ar" : pathWithoutLocale;
+};
+
+export const absoluteUrl = (lang: Lang, pathWithoutLocale: string): string =>
+  `${SITE_URL}${localePath(lang, pathWithoutLocale)}`;
+
+// ===== UI strings =====
+export type Dict = typeof DICT["en"];
+
+export const DICT = {
+  en: {
+    siteName: "Casa",
+    tagline: "Premium Gents Grooming",
+    nav: {
+      home: "Home",
+      services: "Services",
+      products: "Products",
+      reservation: "Reservation",
+      app: "Casa App",
+      admin: "Admin",
+      login: "Sign in",
+      logout: "Sign out",
+    },
+    cta: {
+      book: "Book Appointment",
+      bookNow: "Book Now",
+      reserve: "Reserve a Chair",
+      explore: "Explore Services",
+      readMore: "Read more",
+      viewAllServices: "View all services →",
+      shopAll: "Shop all products →",
+      orderWhatsApp: "Order via WhatsApp",
+    },
+    home: {
+      eyebrow: "Established · Ajman",
+      heroTitle1: "Premium Gents",
+      heroTitleAccent: "Grooming",
+      heroTitle2: "at Casa",
+      heroLead:
+        "Haircuts, beard care, grooming products, and easy reservations — all in one place.",
+      featuredEyebrow: "Signature Services",
+      featuredTitle: "Crafted, not rushed.",
+      featuredIntro:
+        "A short list of carefully designed services. Every chair, every cut, finished to the same Casa standard.",
+      productsEyebrow: "Grooming Products",
+      productsTitle: "Take Casa home with you.",
+      productsIntro: "A focused range of products we use and trust in the chair.",
+      bookEyebrow: "Reservation",
+      bookTitle: "Book in under a minute.",
+      bookLead:
+        "Pick your service, pick your barber, choose a time. We hold the chair — you arrive, relax, and let us take care of the rest.",
+      bookFeatures: [
+        "Live availability, no waiting on calls",
+        "Reminders by WhatsApp",
+        "In-salon or at home",
+      ],
+      todayLabel: "Today",
+      liveAvailability: "Live availability — updated every minute.",
+      appEyebrow: "Coming Soon",
+      appTitle: "The Casa Barber App.",
+      appLead:
+        "Book a barber at home, register as a freelance barber, or connect your salon to receive more reservations. One app — built for the whole grooming ecosystem.",
+      appCta: "Discover the Casa App →",
+      appCardTitle: "At-home barber, on demand.",
+      testimonialsEyebrow: "Word of mouth",
+      testimonialsTitle: "What our guests say.",
+      testimonials: [
+        { quote: "Best haircut I've had in Ajman. The attention to detail is on another level.", name: "Yusuf B." },
+        { quote: "The grooming package made my wedding day. Everything was calm, premium, on time.", name: "Mohammed A." },
+        { quote: "I switched to Casa six months ago and never looked back. Real craftsmen.", name: "Khalid L." },
+      ],
+      visitEyebrow: "Visit Us",
+      visitTitle: "Find Casa.",
+    },
+    services: {
+      pageEyebrow: "Our Services",
+      pageTitle: "Designed for the modern gentleman.",
+      pageIntro:
+        "From a precise classic cut to an at-home barber visit — pick the experience that fits your day.",
+      detailAbout: "About",
+      detailBenefits: "Benefits",
+      detailIncluded: "What's included",
+      detailAddons: "Recommended add-ons",
+      detailReserve: "Reserve",
+      detailFreeCancel: "Free cancellation up to 2h before.",
+      backAll: "← All services",
+      durationMinutes: (n: number) => `${n} min`,
+      pricePrefix: "AED",
+    },
+    products: {
+      pageEyebrow: "Grooming Products",
+      pageTitle: "Take Casa home with you.",
+      pageIntro:
+        "A focused range we use every day in the chair. Order via WhatsApp — we'll confirm in minutes.",
+    },
+    reservation: {
+      pageEyebrow: "Reservation",
+      pageTitle: "Book your chair.",
+      pageIntro:
+        "Pick a service, your barber, and a time that works. We'll confirm by WhatsApp.",
+      service: "Service",
+      barber: "Barber",
+      date: "Date",
+      timeSlot: "Time slot",
+      pickDate: "Pick a date",
+      fullName: "Full name",
+      yourName: "Your name",
+      phone: "Phone",
+      notes: "Notes (optional)",
+      notesPh: "Anything we should know?",
+      confirm: "Confirm Booking",
+      summary: "Summary",
+      confirmedEyebrow: "Confirmed",
+      confirmedTitle: "Your chair is held.",
+      confirmedThanks: (name: string) => `Thank you, ${name}.`,
+      confirmedDesc: (phone: string) => `We'll send a WhatsApp confirmation to ${phone} shortly.`,
+      another: "Make another booking",
+      missingFields: "Please fill in all required fields.",
+      bookingSaved: "Booking confirmed",
+    },
+    app: {
+      eyebrow: "Coming Soon",
+      title: "Casa Barber App.",
+      lead:
+        "Book a barber at home, register as a freelance barber, or connect your salon to receive more reservations. One app — for the whole grooming ecosystem.",
+      rolesEyebrow: "Built for everyone",
+      rolesTitle: "Three sides. One app.",
+      roles: [
+        { title: "Customers", text: "Book a Casa-vetted barber to your home in minutes. Same standards as the salon, on your sofa." },
+        { title: "Freelance Barbers", text: "Register as a freelance barber, set your rates, and let Casa send you clients in your area." },
+        { title: "Salons", text: "List your branch, manage your schedule, and receive new bookings from the Casa network." },
+      ],
+      waitEyebrow: "Early Access",
+      waitTitle: "Join the waiting list.",
+      waitJoined: "You're on the list.",
+      waitJoinedDesc: "We'll notify you the moment Casa Barber App goes live.",
+      emailPh: "you@email.com",
+      joinCta: "Join Waiting List",
+      noSpam: "No spam. One email when we launch.",
+    },
+    footer: {
+      visit: "Visit",
+      explore: "Explore",
+      tagline:
+        "A premium grooming lounge for the modern gentleman. Haircuts, beard care, skin, and home barber service — all in one place.",
+      rights: "All rights reserved.",
+    },
+    admin: {
+      title: "Bookings",
+      eyebrow: "Admin",
+      empty: "No bookings yet.",
+      cols: { date: "Date", time: "Time", customer: "Customer", phone: "Phone", service: "Service", status: "Status", actions: "Actions" },
+      confirm: "Confirm",
+      cancel: "Cancel",
+      signedInAs: (e: string) => `Signed in as ${e}`,
+      notAdmin: "You're signed in but not an admin. Ask a project owner to grant your account the admin role in Supabase.",
+    },
+    login: {
+      title: "Admin sign in",
+      eyebrow: "Admin",
+      email: "Email",
+      password: "Password",
+      submit: "Sign in",
+      signup: "Create account",
+      switchSignup: "No account? Sign up",
+      switchLogin: "Have an account? Sign in",
+      success: "Welcome back.",
+      created: "Account created. You can now sign in.",
+    },
+    common: {
+      loading: "Loading…",
+      error: "Something went wrong.",
+      retry: "Retry",
+      goHome: "Go home",
+      notFound: "Page not found",
+      notFoundDesc: "The page you're looking for doesn't exist or has been moved.",
+      switchLang: "العربية",
+      switchLangShort: "AR",
+    },
+  },
+  ar: {
+    siteName: "كازا",
+    tagline: "صالون رجالي راقي",
+    nav: {
+      home: "الرئيسية",
+      services: "الخدمات",
+      products: "المنتجات",
+      reservation: "الحجز",
+      app: "تطبيق كازا",
+      admin: "الإدارة",
+      login: "تسجيل الدخول",
+      logout: "تسجيل الخروج",
+    },
+    cta: {
+      book: "احجز موعدك",
+      bookNow: "احجز الآن",
+      reserve: "احجز كرسيك",
+      explore: "استكشف الخدمات",
+      readMore: "اقرأ المزيد",
+      viewAllServices: "عرض كل الخدمات ←",
+      shopAll: "تسوق كل المنتجات ←",
+      orderWhatsApp: "اطلب عبر واتساب",
+    },
+    home: {
+      eyebrow: "تأسس · عجمان",
+      heroTitle1: "صالون رجالي",
+      heroTitleAccent: "راقٍ",
+      heroTitle2: "في كازا",
+      heroLead:
+        "قص شعر، عناية باللحية، منتجات تجميل، وحجز سهل — كل شيء في مكان واحد.",
+      featuredEyebrow: "خدماتنا المميزة",
+      featuredTitle: "عمل متقن، بلا استعجال.",
+      featuredIntro:
+        "قائمة قصيرة من الخدمات المصممة بعناية. كل كرسي، كل قصة، بنفس معايير كازا.",
+      productsEyebrow: "منتجات التجميل",
+      productsTitle: "خذ كازا معك إلى المنزل.",
+      productsIntro: "مجموعة منتقاة من المنتجات التي نستخدمها ونثق بها.",
+      bookEyebrow: "الحجز",
+      bookTitle: "احجز في أقل من دقيقة.",
+      bookLead:
+        "اختر خدمتك، اختر حلاقك، اختر الوقت. نحن نحجز لك الكرسي — تأتي، تسترخي، ودعنا نتولى الباقي.",
+      bookFeatures: [
+        "توفر مباشر، بدون انتظار للمكالمات",
+        "تذكيرات عبر واتساب",
+        "في الصالون أو في المنزل",
+      ],
+      todayLabel: "اليوم",
+      liveAvailability: "توفر مباشر — يتم التحديث كل دقيقة.",
+      appEyebrow: "قريباً",
+      appTitle: "تطبيق كازا للحلاقين.",
+      appLead:
+        "احجز حلاقاً في منزلك، سجّل كحلاق مستقل، أو اربط صالونك لتلقي المزيد من الحجوزات. تطبيق واحد — لمنظومة العناية بالكامل.",
+      appCta: "اكتشف تطبيق كازا ←",
+      appCardTitle: "حلاق منزلي، عند الطلب.",
+      testimonialsEyebrow: "كلام الزبائن",
+      testimonialsTitle: "ماذا يقول ضيوفنا.",
+      testimonials: [
+        { quote: "أفضل قصة شعر حصلت عليها في عجمان. الاهتمام بالتفاصيل في مستوى آخر.", name: "يوسف ب." },
+        { quote: "باقة العناية جعلت يوم زفافي مميزاً. كل شيء كان هادئاً، راقياً، وفي الوقت المحدد.", name: "محمد أ." },
+        { quote: "تحولت إلى كازا قبل ستة أشهر ولم أنظر إلى الوراء. حرفيون حقيقيون.", name: "خالد ل." },
+      ],
+      visitEyebrow: "زورونا",
+      visitTitle: "تجدون كازا هنا.",
+    },
+    services: {
+      pageEyebrow: "خدماتنا",
+      pageTitle: "مصممة للرجل العصري.",
+      pageIntro:
+        "من قصة كلاسيكية دقيقة إلى زيارة حلاق منزلية — اختر التجربة التي تناسب يومك.",
+      detailAbout: "عن الخدمة",
+      detailBenefits: "الفوائد",
+      detailIncluded: "ما يشمله",
+      detailAddons: "إضافات موصى بها",
+      detailReserve: "احجز",
+      detailFreeCancel: "إلغاء مجاني حتى ساعتين قبل الموعد.",
+      backAll: "→ كل الخدمات",
+      durationMinutes: (n: number) => `${n} دقيقة`,
+      pricePrefix: "د.إ",
+    },
+    products: {
+      pageEyebrow: "منتجات التجميل",
+      pageTitle: "خذ كازا معك إلى المنزل.",
+      pageIntro:
+        "مجموعة منتقاة نستخدمها يومياً. اطلب عبر واتساب — سنؤكد خلال دقائق.",
+    },
+    reservation: {
+      pageEyebrow: "الحجز",
+      pageTitle: "احجز كرسيك.",
+      pageIntro:
+        "اختر خدمة، حلاقك، ووقتاً يناسبك. سنؤكد عبر واتساب.",
+      service: "الخدمة",
+      barber: "الحلاق",
+      date: "التاريخ",
+      timeSlot: "الوقت",
+      pickDate: "اختر تاريخاً",
+      fullName: "الاسم الكامل",
+      yourName: "اسمك",
+      phone: "الهاتف",
+      notes: "ملاحظات (اختياري)",
+      notesPh: "هل هناك شيء يجب أن نعرفه؟",
+      confirm: "تأكيد الحجز",
+      summary: "الملخص",
+      confirmedEyebrow: "تم التأكيد",
+      confirmedTitle: "كرسيك محجوز.",
+      confirmedThanks: (name: string) => `شكراً، ${name}.`,
+      confirmedDesc: (phone: string) => `سنرسل تأكيداً عبر واتساب إلى ${phone} قريباً.`,
+      another: "حجز جديد",
+      missingFields: "يرجى ملء جميع الحقول المطلوبة.",
+      bookingSaved: "تم تأكيد الحجز",
+    },
+    app: {
+      eyebrow: "قريباً",
+      title: "تطبيق كازا للحلاقين.",
+      lead:
+        "احجز حلاقاً في منزلك، سجّل كحلاق مستقل، أو اربط صالونك لتلقي المزيد من الحجوزات. تطبيق واحد — لمنظومة العناية بالكامل.",
+      rolesEyebrow: "مصمم للجميع",
+      rolesTitle: "ثلاث جهات. تطبيق واحد.",
+      roles: [
+        { title: "الزبائن", text: "احجز حلاقاً معتمداً من كازا إلى منزلك خلال دقائق. نفس معايير الصالون، على أريكتك." },
+        { title: "الحلاقون المستقلون", text: "سجّل كحلاق مستقل، حدد أسعارك، ودع كازا ترسل لك زبائن في منطقتك." },
+        { title: "الصالونات", text: "اعرض فرعك، أدر جدولك، واستقبل حجوزات جديدة من شبكة كازا." },
+      ],
+      waitEyebrow: "وصول مبكر",
+      waitTitle: "انضم إلى قائمة الانتظار.",
+      waitJoined: "أنت على القائمة.",
+      waitJoinedDesc: "سنخبرك في اللحظة التي يصبح فيها التطبيق متاحاً.",
+      emailPh: "you@email.com",
+      joinCta: "انضم إلى قائمة الانتظار",
+      noSpam: "لا رسائل مزعجة. بريد واحد عند الإطلاق.",
+    },
+    footer: {
+      visit: "زورونا",
+      explore: "استكشف",
+      tagline:
+        "صالون عناية راقٍ للرجل العصري. قص شعر، عناية باللحية، بشرة، وخدمة حلاق منزلية — كل شيء في مكان واحد.",
+      rights: "جميع الحقوق محفوظة.",
+    },
+    admin: {
+      title: "الحجوزات",
+      eyebrow: "الإدارة",
+      empty: "لا توجد حجوزات بعد.",
+      cols: { date: "التاريخ", time: "الوقت", customer: "الزبون", phone: "الهاتف", service: "الخدمة", status: "الحالة", actions: "الإجراءات" },
+      confirm: "تأكيد",
+      cancel: "إلغاء",
+      signedInAs: (e: string) => `مسجّل الدخول كـ ${e}`,
+      notAdmin: "أنت مسجّل الدخول لكن لست مديراً. اطلب من مالك المشروع منح حسابك صلاحية الإدارة في Supabase.",
+    },
+    login: {
+      title: "دخول الإدارة",
+      eyebrow: "الإدارة",
+      email: "البريد الإلكتروني",
+      password: "كلمة المرور",
+      submit: "تسجيل الدخول",
+      signup: "إنشاء حساب",
+      switchSignup: "ليس لديك حساب؟ سجّل",
+      switchLogin: "لديك حساب؟ سجّل الدخول",
+      success: "أهلاً بعودتك.",
+      created: "تم إنشاء الحساب. يمكنك الآن تسجيل الدخول.",
+    },
+    common: {
+      loading: "جارٍ التحميل…",
+      error: "حدث خطأ ما.",
+      retry: "إعادة المحاولة",
+      goHome: "العودة للرئيسية",
+      notFound: "الصفحة غير موجودة",
+      notFoundDesc: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+      switchLang: "English",
+      switchLangShort: "EN",
+    },
+  },
+} as const;
+
+export const t = (lang: Lang) => DICT[lang];
+
+// Format a price (numeric) with the language-appropriate currency label.
+export const formatPrice = (lang: Lang, price: number): string =>
+  lang === "ar" ? `${price} د.إ` : `${price} AED`;
