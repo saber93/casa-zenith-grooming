@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReservationRouteImport } from './routes/reservation'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as AppRouteImport } from './routes/app'
@@ -23,11 +22,6 @@ import { Route as ArAppRouteImport } from './routes/ar.app'
 import { Route as ArServicesIndexRouteImport } from './routes/ar.services.index'
 import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
 
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ReservationRoute = ReservationRouteImport.update({
   id: '/reservation',
   path: '/reservation',
@@ -94,7 +88,6 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
-  '/services': typeof ServicesRouteWithChildren
   '/ar/app': typeof ArAppRoute
   '/ar/products': typeof ArProductsRoute
   '/ar/reservation': typeof ArReservationRoute
@@ -124,7 +117,6 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
-  '/services': typeof ServicesRouteWithChildren
   '/ar/app': typeof ArAppRoute
   '/ar/products': typeof ArProductsRoute
   '/ar/reservation': typeof ArReservationRoute
@@ -141,7 +133,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/products'
     | '/reservation'
-    | '/services'
     | '/ar/app'
     | '/ar/products'
     | '/ar/reservation'
@@ -170,7 +161,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/products'
     | '/reservation'
-    | '/services'
     | '/ar/app'
     | '/ar/products'
     | '/ar/reservation'
@@ -186,7 +176,6 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   ProductsRoute: typeof ProductsRoute
   ReservationRoute: typeof ReservationRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
   ArAppRoute: typeof ArAppRoute
   ArProductsRoute: typeof ArProductsRoute
   ArReservationRoute: typeof ArReservationRoute
@@ -197,13 +186,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reservation': {
       id: '/reservation'
       path: '/reservation'
@@ -291,26 +273,11 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface ServicesRouteChildren {
-  ServicesSlugRoute: typeof ServicesSlugRoute
-  ServicesIndexRoute: typeof ServicesIndexRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesSlugRoute: ServicesSlugRoute,
-  ServicesIndexRoute: ServicesIndexRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
   ProductsRoute: ProductsRoute,
   ReservationRoute: ReservationRoute,
-  ServicesRoute: ServicesRouteWithChildren,
   ArAppRoute: ArAppRoute,
   ArProductsRoute: ArProductsRoute,
   ArReservationRoute: ArReservationRoute,
@@ -321,3 +288,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
