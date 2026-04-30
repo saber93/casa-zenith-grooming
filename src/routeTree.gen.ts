@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReservationRouteImport } from './routes/reservation'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
@@ -18,9 +19,12 @@ import { Route as ArIndexRouteImport } from './routes/ar.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ArReservationRouteImport } from './routes/ar.reservation'
 import { Route as ArProductsRouteImport } from './routes/ar.products'
+import { Route as ArLoginRouteImport } from './routes/ar.login'
 import { Route as ArAppRouteImport } from './routes/ar.app'
+import { Route as AdminBookingsRouteImport } from './routes/admin.bookings'
 import { Route as ArServicesIndexRouteImport } from './routes/ar.services.index'
 import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
+import { Route as ArAdminBookingsRouteImport } from './routes/ar.admin.bookings'
 
 const ReservationRoute = ReservationRouteImport.update({
   id: '/reservation',
@@ -30,6 +34,11 @@ const ReservationRoute = ReservationRouteImport.update({
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -67,9 +76,19 @@ const ArProductsRoute = ArProductsRouteImport.update({
   path: '/ar/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArLoginRoute = ArLoginRouteImport.update({
+  id: '/ar/login',
+  path: '/ar/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArAppRoute = ArAppRouteImport.update({
   id: '/ar/app',
   path: '/ar/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBookingsRoute = AdminBookingsRouteImport.update({
+  id: '/admin/bookings',
+  path: '/admin/bookings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArServicesIndexRoute = ArServicesIndexRouteImport.update({
@@ -82,32 +101,45 @@ const ArServicesSlugRoute = ArServicesSlugRouteImport.update({
   path: '/ar/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArAdminBookingsRoute = ArAdminBookingsRouteImport.update({
+  id: '/ar/admin/bookings',
+  path: '/ar/admin/bookings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
+  '/admin/bookings': typeof AdminBookingsRoute
   '/ar/app': typeof ArAppRoute
+  '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/ar/admin/bookings': typeof ArAdminBookingsRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
+  '/admin/bookings': typeof AdminBookingsRoute
   '/ar/app': typeof ArAppRoute
+  '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar': typeof ArIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/ar/admin/bookings': typeof ArAdminBookingsRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services': typeof ArServicesIndexRoute
 }
@@ -115,14 +147,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
+  '/admin/bookings': typeof AdminBookingsRoute
   '/ar/app': typeof ArAppRoute
+  '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/ar/admin/bookings': typeof ArAdminBookingsRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
@@ -131,42 +167,54 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/login'
     | '/products'
     | '/reservation'
+    | '/admin/bookings'
     | '/ar/app'
+    | '/ar/login'
     | '/ar/products'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
+    | '/ar/admin/bookings'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
+    | '/login'
     | '/products'
     | '/reservation'
+    | '/admin/bookings'
     | '/ar/app'
+    | '/ar/login'
     | '/ar/products'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar'
     | '/services'
+    | '/ar/admin/bookings'
     | '/ar/services/$slug'
     | '/ar/services'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/login'
     | '/products'
     | '/reservation'
+    | '/admin/bookings'
     | '/ar/app'
+    | '/ar/login'
     | '/ar/products'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
+    | '/ar/admin/bookings'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesById: FileRoutesById
@@ -174,14 +222,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
   ReservationRoute: typeof ReservationRoute
+  AdminBookingsRoute: typeof AdminBookingsRoute
   ArAppRoute: typeof ArAppRoute
+  ArLoginRoute: typeof ArLoginRoute
   ArProductsRoute: typeof ArProductsRoute
   ArReservationRoute: typeof ArReservationRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   ArIndexRoute: typeof ArIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ArAdminBookingsRoute: typeof ArAdminBookingsRoute
   ArServicesSlugRoute: typeof ArServicesSlugRoute
   ArServicesIndexRoute: typeof ArServicesIndexRoute
 }
@@ -200,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -251,11 +310,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/login': {
+      id: '/ar/login'
+      path: '/ar/login'
+      fullPath: '/ar/login'
+      preLoaderRoute: typeof ArLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ar/app': {
       id: '/ar/app'
       path: '/ar/app'
       fullPath: '/ar/app'
       preLoaderRoute: typeof ArAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/bookings': {
+      id: '/admin/bookings'
+      path: '/admin/bookings'
+      fullPath: '/admin/bookings'
+      preLoaderRoute: typeof AdminBookingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ar/services/': {
@@ -272,20 +345,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/admin/bookings': {
+      id: '/ar/admin/bookings'
+      path: '/ar/admin/bookings'
+      fullPath: '/ar/admin/bookings'
+      preLoaderRoute: typeof ArAdminBookingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  LoginRoute: LoginRoute,
   ProductsRoute: ProductsRoute,
   ReservationRoute: ReservationRoute,
+  AdminBookingsRoute: AdminBookingsRoute,
   ArAppRoute: ArAppRoute,
+  ArLoginRoute: ArLoginRoute,
   ArProductsRoute: ArProductsRoute,
   ArReservationRoute: ArReservationRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   ArIndexRoute: ArIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ArAdminBookingsRoute: ArAdminBookingsRoute,
   ArServicesSlugRoute: ArServicesSlugRoute,
   ArServicesIndexRoute: ArServicesIndexRoute,
 }

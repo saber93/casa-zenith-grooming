@@ -10,8 +10,9 @@ import { useAuth } from "@/lib/auth-context";
 export function Header({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
   const tt = t(lang);
-  const { isAdmin } = useAuth();
+  const { isAdmin, loading, signOut, user } = useAuth();
   const { pathname } = useLocation();
+  const loginHref = `${localePath(lang, "/login")}?redirect=${encodeURIComponent(pathname)}`;
 
   const nav = [
     { to: localePath(lang, "/"), label: tt.nav.home, exact: true },
@@ -24,6 +25,11 @@ export function Header({ lang }: { lang: Lang }) {
 
   const isActive = (href: string, exact?: boolean) =>
     exact ? pathname === href : pathname === href || pathname.startsWith(href + "/");
+
+  const handleSignOut = async () => {
+    await signOut();
+    setOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -57,6 +63,23 @@ export function Header({ lang }: { lang: Lang }) {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher lang={lang} />
+          {!loading &&
+            (user ? (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {tt.nav.logout}
+              </button>
+            ) : (
+              <a
+                href={loginHref}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {tt.nav.login}
+              </a>
+            ))}
           <Link
             to={localePath(lang, "/reservation")}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:shadow-glow hover:brightness-110"
@@ -92,6 +115,24 @@ export function Header({ lang }: { lang: Lang }) {
                 {item.label}
               </Link>
             ))}
+            {!loading &&
+              (user ? (
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="border-b border-border/40 py-3 text-left text-base text-muted-foreground"
+                >
+                  {tt.nav.logout}
+                </button>
+              ) : (
+                <a
+                  href={loginHref}
+                  onClick={() => setOpen(false)}
+                  className="border-b border-border/40 py-3 text-base text-muted-foreground"
+                >
+                  {tt.nav.login}
+                </a>
+              ))}
             <Link
               to={localePath(lang, "/reservation")}
               onClick={() => setOpen(false)}
