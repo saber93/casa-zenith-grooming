@@ -5,49 +5,49 @@ import { getServiceBySlug } from "@/server/casa.functions";
 import { buildPageHead, serviceJsonLd } from "@/lib/seo";
 import { absoluteUrl, t } from "@/lib/i18n";
 
-export const Route = createFileRoute("/services/$slug")({
+export const Route = createFileRoute("/ar/services/$slug")({
   loader: async ({ params }) => {
-    const service = await getServiceBySlug({ data: { slug: params.slug, lang: "en" } });
+    const service = await getServiceBySlug({ data: { slug: params.slug, lang: "ar" } });
     if (!service) throw notFound();
     return service;
   },
   head: ({ loaderData }) => {
     if (!loaderData) return {};
-    const url = absoluteUrl("en", `/services/${loaderData.slug_en}`);
+    const url = absoluteUrl("ar", `/services/${loaderData.slug_ar}`);
     return buildPageHead({
-      lang: "en",
-      pathWithoutLocale: `/services/${loaderData.slug_en}`,
-      title: `${loaderData.title_en} — Casa Gents Salon Ajman`,
-      description: loaderData.short_description_en ?? `${loaderData.title_en} at Casa Ajman.`,
+      lang: "ar",
+      pathWithoutLocale: `/services/${loaderData.slug_ar}`,
+      title: `${loaderData.title_ar} — صالون كازا للرجال عجمان`,
+      description: loaderData.short_description_ar ?? `${loaderData.title_ar} في كازا عجمان.`,
       ogType: "article",
       ogImage: loaderData.image_url ?? undefined,
       jsonLd: serviceJsonLd({
-        lang: "en",
-        name: loaderData.title_en,
-        description: loaderData.description_en ?? loaderData.short_description_en ?? "",
+        lang: "ar",
+        name: loaderData.title_ar,
+        description: loaderData.description_ar ?? loaderData.short_description_ar ?? "",
         price: Number(loaderData.price),
         url,
       }),
     });
   },
   notFoundComponent: () => {
-    const tt = t("en");
+    const tt = t("ar");
     return (
-      <Section lang="en" eyebrow="404" title={tt.common.notFound}>
-        <Link to="/services" className="text-primary hover:underline">{tt.services.backAll}</Link>
+      <Section lang="ar" eyebrow="404" title={tt.common.notFound}>
+        <Link to="/ar/services" className="text-primary hover:underline">{tt.services.backAll}</Link>
       </Section>
     );
   },
   errorComponent: ({ error, reset }) => {
     const router = useRouter();
     return (
-      <Section lang="en" eyebrow="Error" title={t("en").common.error}>
+      <Section lang="ar" eyebrow="خطأ" title={t("ar").common.error}>
         <p className="text-muted-foreground">{error.message}</p>
         <button onClick={() => { router.invalidate(); reset(); }} className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
-          {t("en").common.retry}
+          {t("ar").common.retry}
         </button>
       </Section>
     );
   },
-  component: () => <ServiceDetailPage lang="en" service={Route.useLoaderData()} />,
+  component: () => <ServiceDetailPage lang="ar" service={Route.useLoaderData()} />,
 });

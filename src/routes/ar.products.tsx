@@ -3,11 +3,11 @@ import { ProductsPage } from "@/components/casa/pages/ProductsPage";
 import { listProducts } from "@/server/casa.functions";
 import { buildPageHead, pageSeoCopy } from "@/lib/seo";
 
-export const Route = createFileRoute("/products")({
+export const Route = createFileRoute("/ar/products")({
   loader: () => listProducts(),
   head: () => {
-    const seo = pageSeoCopy("en", "products");
-    return buildPageHead({ lang: "en", pathWithoutLocale: "/products", ...seo });
+    const seo = pageSeoCopy("ar", "products");
+    return buildPageHead({ lang: "ar", pathWithoutLocale: "/products", ...seo });
   },
-  component: () => <ProductsPage lang="en" products={Route.useLoaderData()} />,
+  component: () => <ProductsPage lang="ar" products={Route.useLoaderData()} />,
 });

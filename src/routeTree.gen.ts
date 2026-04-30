@@ -9,18 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReservationRouteImport } from './routes/reservation'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ArIndexRouteImport } from './routes/ar.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ArReservationRouteImport } from './routes/ar.reservation'
+import { Route as ArProductsRouteImport } from './routes/ar.products'
+import { Route as ArAppRouteImport } from './routes/ar.app'
+import { Route as ArServicesIndexRouteImport } from './routes/ar.services.index'
+import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
 
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ReservationRoute = ReservationRouteImport.update({
   id: '/reservation',
   path: '/reservation',
@@ -41,10 +42,45 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ArIndexRoute = ArIndexRouteImport.update({
+  id: '/ar/',
+  path: '/ar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => ServicesRoute,
+} as any)
+const ArReservationRoute = ArReservationRouteImport.update({
+  id: '/ar/reservation',
+  path: '/ar/reservation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArProductsRoute = ArProductsRouteImport.update({
+  id: '/ar/products',
+  path: '/ar/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArAppRoute = ArAppRouteImport.update({
+  id: '/ar/app',
+  path: '/ar/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArServicesIndexRoute = ArServicesIndexRouteImport.update({
+  id: '/ar/services/',
+  path: '/ar/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArServicesSlugRoute = ArServicesSlugRouteImport.update({
+  id: '/ar/services/$slug',
+  path: '/ar/services/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -52,16 +88,28 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/ar/app': typeof ArAppRoute
+  '/ar/products': typeof ArProductsRoute
+  '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/ar/': typeof ArIndexRoute
+  '/services/': typeof ServicesIndexRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/ar/services/': typeof ArServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/ar/app': typeof ArAppRoute
+  '/ar/products': typeof ArProductsRoute
+  '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/ar': typeof ArIndexRoute
+  '/services': typeof ServicesIndexRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/ar/services': typeof ArServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,8 +117,14 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/products': typeof ProductsRoute
   '/reservation': typeof ReservationRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/ar/app': typeof ArAppRoute
+  '/ar/products': typeof ArProductsRoute
+  '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/ar/': typeof ArIndexRoute
+  '/services/': typeof ServicesIndexRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/ar/services/': typeof ArServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,24 +133,42 @@ export interface FileRouteTypes {
     | '/app'
     | '/products'
     | '/reservation'
-    | '/services'
+    | '/ar/app'
+    | '/ar/products'
+    | '/ar/reservation'
     | '/services/$slug'
+    | '/ar/'
+    | '/services/'
+    | '/ar/services/$slug'
+    | '/ar/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
     | '/products'
     | '/reservation'
-    | '/services'
+    | '/ar/app'
+    | '/ar/products'
+    | '/ar/reservation'
     | '/services/$slug'
+    | '/ar'
+    | '/services'
+    | '/ar/services/$slug'
+    | '/ar/services'
   id:
     | '__root__'
     | '/'
     | '/app'
     | '/products'
     | '/reservation'
-    | '/services'
+    | '/ar/app'
+    | '/ar/products'
+    | '/ar/reservation'
     | '/services/$slug'
+    | '/ar/'
+    | '/services/'
+    | '/ar/services/$slug'
+    | '/ar/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -104,18 +176,16 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   ProductsRoute: typeof ProductsRoute
   ReservationRoute: typeof ReservationRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
+  ArAppRoute: typeof ArAppRoute
+  ArProductsRoute: typeof ArProductsRoute
+  ArReservationRoute: typeof ArReservationRoute
+  ArIndexRoute: typeof ArIndexRoute
+  ArServicesSlugRoute: typeof ArServicesSlugRoute
+  ArServicesIndexRoute: typeof ArServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reservation': {
       id: '/reservation'
       path: '/reservation'
@@ -144,6 +214,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/ar/': {
+      id: '/ar/'
+      path: '/ar'
+      fullPath: '/ar/'
+      preLoaderRoute: typeof ArIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/$slug'
@@ -151,27 +235,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/ar/reservation': {
+      id: '/ar/reservation'
+      path: '/ar/reservation'
+      fullPath: '/ar/reservation'
+      preLoaderRoute: typeof ArReservationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/products': {
+      id: '/ar/products'
+      path: '/ar/products'
+      fullPath: '/ar/products'
+      preLoaderRoute: typeof ArProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/app': {
+      id: '/ar/app'
+      path: '/ar/app'
+      fullPath: '/ar/app'
+      preLoaderRoute: typeof ArAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/services/': {
+      id: '/ar/services/'
+      path: '/ar/services'
+      fullPath: '/ar/services/'
+      preLoaderRoute: typeof ArServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/services/$slug': {
+      id: '/ar/services/$slug'
+      path: '/ar/services/$slug'
+      fullPath: '/ar/services/$slug'
+      preLoaderRoute: typeof ArServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
-
-interface ServicesRouteChildren {
-  ServicesSlugRoute: typeof ServicesSlugRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesSlugRoute: ServicesSlugRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
   ProductsRoute: ProductsRoute,
   ReservationRoute: ReservationRoute,
-  ServicesRoute: ServicesRouteWithChildren,
+  ArAppRoute: ArAppRoute,
+  ArProductsRoute: ArProductsRoute,
+  ArReservationRoute: ArReservationRoute,
+  ArIndexRoute: ArIndexRoute,
+  ArServicesSlugRoute: ArServicesSlugRoute,
+  ArServicesIndexRoute: ArServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
