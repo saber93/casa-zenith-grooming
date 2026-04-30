@@ -18,8 +18,10 @@ export const Route = createFileRoute("/")({
       jsonLd: localBusinessJsonLd("en"),
     });
   },
-  component: () => {
-    const { services, products } = Route.useLoaderData();
-    return <HomePage lang="en" services={services} products={products} />;
-  },
+  component: IndexRouteComponent,
 });
+
+function IndexRouteComponent() {
+  const { services, products } = Route.useLoaderData();
+  return <HomePage lang="en" services={services} products={products} />;
+}

@@ -37,10 +37,38 @@ export function Footer({ lang }: { lang: Lang }) {
         <div>
           <div className="label-eyebrow mb-4">{tt.footer.explore}</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to={localePath(lang, "/services")} className="text-muted-foreground hover:text-foreground">{tt.nav.services}</Link></li>
-            <li><Link to={localePath(lang, "/products")} className="text-muted-foreground hover:text-foreground">{tt.nav.products}</Link></li>
-            <li><Link to={localePath(lang, "/reservation")} className="text-muted-foreground hover:text-foreground">{tt.nav.reservation}</Link></li>
-            <li><Link to={localePath(lang, "/app")} className="text-muted-foreground hover:text-foreground">{tt.nav.app}</Link></li>
+            <li>
+              <Link
+                to={localePath(lang, "/services")}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                {tt.nav.services}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={localePath(lang, "/products")}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                {tt.nav.products}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={localePath(lang, "/reservation")}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                {tt.nav.reservation}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={localePath(lang, "/app")}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                {tt.nav.app}
+              </Link>
+            </li>
           </ul>
           <a
             href={CASA.instagram}
@@ -54,7 +82,10 @@ export function Footer({ lang }: { lang: Lang }) {
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs text-muted-foreground md:flex-row md:px-8">
-          <span>© {new Date().getFullYear()} {lang === "ar" ? CASA.fullNameAr : CASA.fullName}. {tt.footer.rights}</span>
+          <span>
+            © {new Date().getFullYear()} {lang === "ar" ? CASA.fullNameAr : CASA.fullName}.{" "}
+            {tt.footer.rights}
+          </span>
           <span>{lang === "ar" ? CASA.hoursAr : CASA.hours}</span>
         </div>
       </div>

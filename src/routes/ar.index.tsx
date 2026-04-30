@@ -18,8 +18,10 @@ export const Route = createFileRoute("/ar/")({
       jsonLd: localBusinessJsonLd("ar"),
     });
   },
-  component: () => {
-    const { services, products } = Route.useLoaderData();
-    return <HomePage lang="ar" services={services} products={products} />;
-  },
+  component: ArIndexRouteComponent,
 });
+
+function ArIndexRouteComponent() {
+  const { services, products } = Route.useLoaderData();
+  return <HomePage lang="ar" services={services} products={products} />;
+}

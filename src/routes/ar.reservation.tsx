@@ -14,9 +14,11 @@ export const Route = createFileRoute("/ar/reservation")({
     const seo = pageSeoCopy("ar", "reservation");
     return buildPageHead({ lang: "ar", pathWithoutLocale: "/reservation", ...seo });
   },
-  component: () => {
-    const { services, barbers } = Route.useLoaderData();
-    const { service } = Route.useSearch();
-    return <ReservationPage lang="ar" services={services} barbers={barbers} presetSlug={service} />;
-  },
+  component: ArReservationRouteComponent,
 });
+
+function ArReservationRouteComponent() {
+  const { services, barbers } = Route.useLoaderData();
+  const { service } = Route.useSearch();
+  return <ReservationPage lang="ar" services={services} barbers={barbers} presetSlug={service} />;
+}

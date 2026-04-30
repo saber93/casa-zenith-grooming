@@ -38,7 +38,8 @@ export function ServiceCard({ service, lang }: { service: ServiceRow; lang: Lang
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" /> {tt.services.durationMinutes(service.duration_minutes)}
+            <Clock className="h-3.5 w-3.5" />{" "}
+            {tt.services.durationMinutes(service.duration_minutes)}
           </span>
           <span className="text-primary">{formatPrice(lang, service.price)}</span>
         </div>
@@ -46,7 +47,11 @@ export function ServiceCard({ service, lang }: { service: ServiceRow; lang: Lang
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{short}</p>
         <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
           {tt.cta.readMore}
-          <span className={`transition-transform group-hover:translate-x-1 ${lang === "ar" ? "me-1 rotate-180" : "ms-1"}`}>→</span>
+          <span
+            className={`transition-transform group-hover:translate-x-1 ${lang === "ar" ? "me-1 rotate-180" : "ms-1"}`}
+          >
+            →
+          </span>
         </span>
       </div>
     </Link>

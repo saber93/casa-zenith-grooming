@@ -20,38 +20,44 @@ export type ServiceDetail = {
   image_url?: string | null;
 };
 
-export function ServiceDetailPage({
-  lang,
-  service,
-}: {
-  lang: Lang;
-  service: ServiceDetail;
-}) {
+export function ServiceDetailPage({ lang, service }: { lang: Lang; service: ServiceDetail }) {
   const tt = t(lang);
   const title = lang === "ar" ? service.title_ar : service.title_en;
   const short = (lang === "ar" ? service.short_description_ar : service.short_description_en) ?? "";
   const desc = (lang === "ar" ? service.description_ar : service.description_en) ?? "";
-  const benefits = lang === "ar"
-    ? ["مصمم حسب شكل الوجه", "نتيجة تدوم", "استشارة من مصفف خبير"]
-    : ["Tailored to face shape", "Long-lasting result", "Senior stylist consultation"];
-  const included = lang === "ar"
-    ? ["استشارة", "غسيل وعلاج", "خدمة دقيقة", "تصفيف نهائي"]
-    : ["Consultation", "Wash & condition", "Precision service", "Style & finish"];
+  const benefits =
+    lang === "ar"
+      ? ["مصمم حسب شكل الوجه", "نتيجة تدوم", "استشارة من مصفف خبير"]
+      : ["Tailored to face shape", "Long-lasting result", "Senior stylist consultation"];
+  const included =
+    lang === "ar"
+      ? ["استشارة", "غسيل وعلاج", "خدمة دقيقة", "تصفيف نهائي"]
+      : ["Consultation", "Wash & condition", "Precision service", "Style & finish"];
 
   return (
     <>
       <section className="relative isolate overflow-hidden border-b border-border/60">
-        <img src={service.image_url || placeholder} alt={title} className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40" />
+        <img
+          src={service.image_url || placeholder}
+          alt={title}
+          className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
+        />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/30 via-background/70 to-background" />
-        <div className={`mx-auto max-w-7xl px-5 pb-16 pt-28 md:px-8 md:pb-24 md:pt-36 ${lang === "ar" ? "text-right" : ""}`}>
-          <Link to={localePath(lang, "/services")} className="text-sm text-muted-foreground hover:text-foreground">
+        <div
+          className={`mx-auto max-w-7xl px-5 pb-16 pt-28 md:px-8 md:pb-24 md:pt-36 ${lang === "ar" ? "text-right" : ""}`}
+        >
+          <Link
+            to={localePath(lang, "/services")}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             {tt.services.backAll}
           </Link>
           <h1 className="mt-6 max-w-3xl font-serif text-5xl leading-tight md:text-7xl">{title}</h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{short}</p>
           <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 backdrop-blur">
-              <Clock className="h-4 w-4 text-primary" /> {tt.services.durationMinutes(service.duration_minutes)}
+              <Clock className="h-4 w-4 text-primary" />{" "}
+              {tt.services.durationMinutes(service.duration_minutes)}
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/60 bg-primary/10 px-4 py-2 text-primary">
               <Tag className="h-4 w-4" /> {formatPrice(lang, service.price)}
@@ -104,7 +110,9 @@ export function ServiceDetailPage({
               >
                 {tt.cta.bookNow}
               </Link>
-              <p className="mt-4 text-center text-xs text-muted-foreground">{tt.services.detailFreeCancel}</p>
+              <p className="mt-4 text-center text-xs text-muted-foreground">
+                {tt.services.detailFreeCancel}
+              </p>
             </div>
           </aside>
         </div>

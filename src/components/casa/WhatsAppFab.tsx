@@ -4,9 +4,10 @@ import { MessageCircle } from "lucide-react";
 import { t } from "@/lib/i18n";
 
 export function WhatsAppFab({ lang }: { lang: Lang }) {
-  const msg = lang === "ar"
-    ? `مرحباً ${CASA.nameAr}، أود حجز موعد.`
-    : `Hi ${CASA.name}, I'd like to book an appointment.`;
+  const msg =
+    lang === "ar"
+      ? `مرحباً ${CASA.nameAr}، أود حجز موعد.`
+      : `Hi ${CASA.name}, I'd like to book an appointment.`;
   return (
     <a
       href={waLink(msg)}

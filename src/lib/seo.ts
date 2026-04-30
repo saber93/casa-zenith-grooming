@@ -129,23 +129,76 @@ export function serviceJsonLd(opts: {
 }
 
 // Convenience: SEO copy per page in both langs (keywords baked in).
-export function pageSeoCopy(lang: Lang, page: "home" | "services" | "products" | "reservation" | "app") {
+export function pageSeoCopy(
+  lang: Lang,
+  page: "home" | "services" | "products" | "reservation" | "app",
+) {
   const tt = t(lang);
   if (lang === "en") {
     switch (page) {
-      case "home": return { title: "Casa Gents Salon — Barber & Men's Grooming in Ajman", description: "Premium barber and gents salon in Ajman. Haircuts, beard care, facial, and home barber service. Book online in under a minute." };
-      case "services": return { title: "Services — Men Haircut, Beard, Facial — Casa Ajman", description: "All Casa services: classic haircut, beard trim, facial care, hair coloring, kids haircut, home barber service in Ajman. Prices and durations." };
-      case "products": return { title: "Grooming Products — Casa Gents Salon Ajman", description: "Beard oil, hair pomade, shampoo, aftershave and signature cologne. Order via WhatsApp from Casa Ajman." };
-      case "reservation": return { title: "Book Appointment — Casa Barber Ajman", description: "Reserve your chair at Casa Gents Salon Ajman. Pick your service, barber, date and time online." };
-      case "app": return { title: "Casa Barber App — At-Home Barber in Ajman", description: "Book a Casa-vetted barber to your home. Coming soon for customers, freelance barbers, and salons." };
+      case "home":
+        return {
+          title: "Casa Gents Salon — Barber & Men's Grooming in Ajman",
+          description:
+            "Premium barber and gents salon in Ajman. Haircuts, beard care, facial, and home barber service. Book online in under a minute.",
+        };
+      case "services":
+        return {
+          title: "Services — Men Haircut, Beard, Facial — Casa Ajman",
+          description:
+            "All Casa services: classic haircut, beard trim, facial care, hair coloring, kids haircut, home barber service in Ajman. Prices and durations.",
+        };
+      case "products":
+        return {
+          title: "Grooming Products — Casa Gents Salon Ajman",
+          description:
+            "Beard oil, hair pomade, shampoo, aftershave and signature cologne. Order via WhatsApp from Casa Ajman.",
+        };
+      case "reservation":
+        return {
+          title: "Book Appointment — Casa Barber Ajman",
+          description:
+            "Reserve your chair at Casa Gents Salon Ajman. Pick your service, barber, date and time online.",
+        };
+      case "app":
+        return {
+          title: "Casa Barber App — At-Home Barber in Ajman",
+          description:
+            "Book a Casa-vetted barber to your home. Coming soon for customers, freelance barbers, and salons.",
+        };
     }
   }
   switch (page) {
-    case "home": return { title: "صالون كازا للرجال — حلاق رجالي في عجمان", description: "صالون رجالي راقٍ في عجمان. قص شعر، عناية باللحية، علاج وجه، وخدمة حلاق منزلية. احجز أونلاين في أقل من دقيقة." };
-    case "services": return { title: "الخدمات — قص شعر رجال، لحية، وجه — كازا عجمان", description: "جميع خدمات كازا: قص شعر كلاسيكي، تهذيب لحية، عناية بالوجه، صبغ شعر، قص شعر أطفال، خدمة حلاق منزلية في عجمان." };
-    case "products": return { title: "منتجات التجميل — صالون كازا للرجال عجمان", description: "زيت لحية، بومادة شعر، شامبو، بلسم بعد الحلاقة، وعطر مميز. اطلب عبر واتساب من كازا عجمان." };
-    case "reservation": return { title: "احجز موعدك — حلاق كازا عجمان", description: "احجز كرسيك في صالون كازا للرجال عجمان. اختر خدمتك، حلاقك، التاريخ والوقت أونلاين." };
-    case "app": return { title: "تطبيق كازا للحلاقين — حلاق منزلي في عجمان", description: "احجز حلاقاً معتمداً من كازا في منزلك. قريباً للزبائن، الحلاقين المستقلين، والصالونات." };
+    case "home":
+      return {
+        title: "صالون كازا للرجال — حلاق رجالي في عجمان",
+        description:
+          "صالون رجالي راقٍ في عجمان. قص شعر، عناية باللحية، علاج وجه، وخدمة حلاق منزلية. احجز أونلاين في أقل من دقيقة.",
+      };
+    case "services":
+      return {
+        title: "الخدمات — قص شعر رجال، لحية، وجه — كازا عجمان",
+        description:
+          "جميع خدمات كازا: قص شعر كلاسيكي، تهذيب لحية، عناية بالوجه، صبغ شعر، قص شعر أطفال، خدمة حلاق منزلية في عجمان.",
+      };
+    case "products":
+      return {
+        title: "منتجات التجميل — صالون كازا للرجال عجمان",
+        description:
+          "زيت لحية، بومادة شعر، شامبو، بلسم بعد الحلاقة، وعطر مميز. اطلب عبر واتساب من كازا عجمان.",
+      };
+    case "reservation":
+      return {
+        title: "احجز موعدك — حلاق كازا عجمان",
+        description:
+          "احجز كرسيك في صالون كازا للرجال عجمان. اختر خدمتك، حلاقك، التاريخ والوقت أونلاين.",
+      };
+    case "app":
+      return {
+        title: "تطبيق كازا للحلاقين — حلاق منزلي في عجمان",
+        description:
+          "احجز حلاقاً معتمداً من كازا في منزلك. قريباً للزبائن، الحلاقين المستقلين، والصالونات.",
+      };
   }
   // unreachable but TS-safe
   return { title: tt.siteName, description: tt.tagline };

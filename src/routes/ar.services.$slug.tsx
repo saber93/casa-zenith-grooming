@@ -30,24 +30,40 @@ export const Route = createFileRoute("/ar/services/$slug")({
       }),
     });
   },
-  notFoundComponent: () => {
-    const tt = t("ar");
-    return (
-      <Section lang="ar" eyebrow="404" title={tt.common.notFound}>
-        <Link to="/ar/services" className="text-primary hover:underline">{tt.services.backAll}</Link>
-      </Section>
-    );
-  },
-  errorComponent: ({ error, reset }) => {
-    const router = useRouter();
-    return (
-      <Section lang="ar" eyebrow="خطأ" title={t("ar").common.error}>
-        <p className="text-muted-foreground">{error.message}</p>
-        <button onClick={() => { router.invalidate(); reset(); }} className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
-          {t("ar").common.retry}
-        </button>
-      </Section>
-    );
-  },
-  component: () => <ServiceDetailPage lang="ar" service={Route.useLoaderData()} />,
+  notFoundComponent: ArServicesSlugNotFoundComponent,
+  errorComponent: ArServicesSlugErrorComponent,
+  component: ArServicesSlugRouteComponent,
 });
+
+function ArServicesSlugNotFoundComponent() {
+  const tt = t("ar");
+  return (
+    <Section lang="ar" eyebrow="404" title={tt.common.notFound}>
+      <Link to="/ar/services" className="text-primary hover:underline">
+        {tt.services.backAll}
+      </Link>
+    </Section>
+  );
+}
+
+function ArServicesSlugErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+  return (
+    <Section lang="ar" eyebrow="خطأ" title={t("ar").common.error}>
+      <p className="text-muted-foreground">{error.message}</p>
+      <button
+        onClick={() => {
+          router.invalidate();
+          reset();
+        }}
+        className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
+      >
+        {t("ar").common.retry}
+      </button>
+    </Section>
+  );
+}
+
+function ArServicesSlugRouteComponent() {
+  return <ServiceDetailPage lang="ar" service={Route.useLoaderData()} />;
+}

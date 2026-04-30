@@ -30,24 +30,40 @@ export const Route = createFileRoute("/services/$slug")({
       }),
     });
   },
-  notFoundComponent: () => {
-    const tt = t("en");
-    return (
-      <Section lang="en" eyebrow="404" title={tt.common.notFound}>
-        <Link to="/services" className="text-primary hover:underline">{tt.services.backAll}</Link>
-      </Section>
-    );
-  },
-  errorComponent: ({ error, reset }) => {
-    const router = useRouter();
-    return (
-      <Section lang="en" eyebrow="Error" title={t("en").common.error}>
-        <p className="text-muted-foreground">{error.message}</p>
-        <button onClick={() => { router.invalidate(); reset(); }} className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
-          {t("en").common.retry}
-        </button>
-      </Section>
-    );
-  },
-  component: () => <ServiceDetailPage lang="en" service={Route.useLoaderData()} />,
+  notFoundComponent: ServicesSlugNotFoundComponent,
+  errorComponent: ServicesSlugErrorComponent,
+  component: ServicesSlugRouteComponent,
 });
+
+function ServicesSlugNotFoundComponent() {
+  const tt = t("en");
+  return (
+    <Section lang="en" eyebrow="404" title={tt.common.notFound}>
+      <Link to="/services" className="text-primary hover:underline">
+        {tt.services.backAll}
+      </Link>
+    </Section>
+  );
+}
+
+function ServicesSlugErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+  return (
+    <Section lang="en" eyebrow="Error" title={t("en").common.error}>
+      <p className="text-muted-foreground">{error.message}</p>
+      <button
+        onClick={() => {
+          router.invalidate();
+          reset();
+        }}
+        className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
+      >
+        {t("en").common.retry}
+      </button>
+    </Section>
+  );
+}
+
+function ServicesSlugRouteComponent() {
+  return <ServiceDetailPage lang="en" service={Route.useLoaderData()} />;
+}

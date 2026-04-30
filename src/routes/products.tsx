@@ -9,5 +9,9 @@ export const Route = createFileRoute("/products")({
     const seo = pageSeoCopy("en", "products");
     return buildPageHead({ lang: "en", pathWithoutLocale: "/products", ...seo });
   },
-  component: () => <ProductsPage lang="en" products={Route.useLoaderData()} />,
+  component: ProductsRouteComponent,
 });
+
+function ProductsRouteComponent() {
+  return <ProductsPage lang="en" products={Route.useLoaderData()} />;
+}

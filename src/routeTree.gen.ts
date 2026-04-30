@@ -43,9 +43,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ServicesRoute,
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ArIndexRoute = ArIndexRouteImport.update({
   id: '/ar/',
@@ -53,9 +53,9 @@ const ArIndexRoute = ArIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ServicesRoute,
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ArReservationRoute = ArReservationRouteImport.update({
   id: '/ar/reservation',
@@ -179,7 +179,9 @@ export interface RootRouteChildren {
   ArAppRoute: typeof ArAppRoute
   ArProductsRoute: typeof ArProductsRoute
   ArReservationRoute: typeof ArReservationRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
   ArIndexRoute: typeof ArIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
   ArServicesSlugRoute: typeof ArServicesSlugRoute
   ArServicesIndexRoute: typeof ArServicesIndexRoute
 }
@@ -216,10 +218,10 @@ declare module '@tanstack/react-router' {
     }
     '/services/': {
       id: '/services/'
-      path: '/'
+      path: '/services'
       fullPath: '/services/'
       preLoaderRoute: typeof ServicesIndexRouteImport
-      parentRoute: typeof ServicesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/ar/': {
       id: '/ar/'
@@ -230,10 +232,10 @@ declare module '@tanstack/react-router' {
     }
     '/services/$slug': {
       id: '/services/$slug'
-      path: '/$slug'
+      path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof ServicesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/ar/reservation': {
       id: '/ar/reservation'
@@ -281,7 +283,9 @@ const rootRouteChildren: RootRouteChildren = {
   ArAppRoute: ArAppRoute,
   ArProductsRoute: ArProductsRoute,
   ArReservationRoute: ArReservationRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
   ArIndexRoute: ArIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
   ArServicesSlugRoute: ArServicesSlugRoute,
   ArServicesIndexRoute: ArServicesIndexRoute,
 }

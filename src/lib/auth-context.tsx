@@ -19,7 +19,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const checkAdmin = async (uid: string | undefined) => {
-    if (!uid) { setIsAdmin(false); return; }
+    if (!uid) {
+      setIsAdmin(false);
+      return;
+    }
     const { data } = await supabase
       .from("user_roles")
       .select("role")
@@ -34,7 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
       // Defer admin check to avoid recursion inside auth callback.
-      setTimeout(() => { checkAdmin(s?.user?.id); }, 0);
+      setTimeout(() => {
+        checkAdmin(s?.user?.id);
+      }, 0);
     });
 
     supabase.auth.getSession().then(({ data: { session: s } }) => {
@@ -45,8 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const refreshAdmin = async () => { await checkAdmin(session?.user?.id); };
-  const signOut = async () => { await supabase.auth.signOut(); };
+  const refreshAdmin = async () => {
+    await checkAdmin(session?.user?.id);
+  };
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <AuthContext.Provider

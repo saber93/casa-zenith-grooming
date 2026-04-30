@@ -28,7 +28,11 @@ export function Header({ lang }: { lang: Lang }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
-        <Link to={localePath(lang, "/")} className="flex items-baseline gap-2" onClick={() => setOpen(false)}>
+        <Link
+          to={localePath(lang, "/")}
+          className="flex items-baseline gap-2"
+          onClick={() => setOpen(false)}
+        >
           <span className="font-serif text-2xl tracking-tight text-foreground">
             {lang === "ar" ? CASA.nameAr : CASA.name}
           </span>

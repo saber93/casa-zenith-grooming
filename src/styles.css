@@ -50,36 +50,52 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 :root {
   --radius: 0.5rem;
 
   /* Casa — charcoal & ember dark theme */
-  --background: oklch(0.18 0.005 30);          /* #1a1a1a */
-  --foreground: oklch(0.96 0.012 80);          /* warm ivory */
+  --background: oklch(0.18 0.005 30); /* #1a1a1a */
+  --foreground: oklch(0.96 0.012 80); /* warm ivory */
   --ivory: oklch(0.96 0.012 80);
-  --ember: oklch(0.66 0.18 35);                /* #e85d3a */
+  --ember: oklch(0.66 0.18 35); /* #e85d3a */
 
-  --surface: oklch(0.235 0.006 30);            /* #2d2d2d */
-  --surface-2: oklch(0.30 0.006 30);
+  --surface: oklch(0.235 0.006 30); /* #2d2d2d */
+  --surface-2: oklch(0.3 0.006 30);
 
   --card: oklch(0.215 0.005 30);
   --card-foreground: oklch(0.96 0.012 80);
   --popover: oklch(0.215 0.005 30);
   --popover-foreground: oklch(0.96 0.012 80);
 
-  --primary: oklch(0.66 0.18 35);              /* ember */
+  --primary: oklch(0.66 0.18 35); /* ember */
   --primary-foreground: oklch(0.16 0.005 30);
 
   --secondary: oklch(0.26 0.006 30);
@@ -115,9 +131,13 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+  }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 
   body {
     background-color: var(--color-background);
@@ -127,7 +147,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, .font-serif {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-serif {
     font-family: var(--font-serif);
     font-weight: 400;
     letter-spacing: -0.01em;
@@ -148,7 +172,9 @@
     font-family: var(--font-arabic);
   }
   /* Don't try to italicize Arabic glyphs — fake italics look terrible. */
-  html[dir="rtl"] .italic { font-style: normal; }
+  html[dir="rtl"] .italic {
+    font-style: normal;
+  }
 
   ::selection {
     background: var(--color-ember);
@@ -168,11 +194,15 @@
   .reveal {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
   }
-  .hairline { border-color: oklch(1 0 0 / 0.08); }
+  .hairline {
+    border-color: oklch(1 0 0 / 0.08);
+  }
 }

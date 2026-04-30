@@ -9,27 +9,24 @@ export const SITE_URL = "https://casa-zenith-grooming.lovable.app";
 
 export const isLang = (v: unknown): v is Lang => v === "en" || v === "ar";
 
-export const langFromLocale = (locale: string | undefined): Lang =>
-  locale === "ar" ? "ar" : "en";
+export const langFromLocale = (locale: string | undefined): Lang => (locale === "ar" ? "ar" : "en");
 
-export const localeForLang = (lang: Lang): string | undefined =>
-  lang === "ar" ? "ar" : undefined;
+export const localeForLang = (lang: Lang): string | undefined => (lang === "ar" ? "ar" : undefined);
 
-export const dirForLang = (lang: Lang): "ltr" | "rtl" =>
-  lang === "ar" ? "rtl" : "ltr";
+export const dirForLang = (lang: Lang): "ltr" | "rtl" => (lang === "ar" ? "rtl" : "ltr");
 
 // Build a public URL for a path in a given language.
 // pathWithoutLocale always starts with "/" (e.g. "/services", "/services/قص-الشعر").
 export const localePath = (lang: Lang, pathWithoutLocale: string): string => {
   const clean = pathWithoutLocale === "/" ? "" : pathWithoutLocale;
-  return lang === "ar" ? `/ar${clean || ""}` || "/ar" : pathWithoutLocale;
+  return lang === "ar" ? (clean ? `/ar${clean}` : "/ar") : pathWithoutLocale;
 };
 
 export const absoluteUrl = (lang: Lang, pathWithoutLocale: string): string =>
   `${SITE_URL}${localePath(lang, pathWithoutLocale)}`;
 
 // ===== UI strings =====
-export type Dict = typeof DICT["en"];
+export type Dict = (typeof DICT)["en"];
 
 export const DICT = {
   en: {
@@ -89,9 +86,18 @@ export const DICT = {
       testimonialsEyebrow: "Word of mouth",
       testimonialsTitle: "What our guests say.",
       testimonials: [
-        { quote: "Best haircut I've had in Ajman. The attention to detail is on another level.", name: "Yusuf B." },
-        { quote: "The grooming package made my wedding day. Everything was calm, premium, on time.", name: "Mohammed A." },
-        { quote: "I switched to Casa six months ago and never looked back. Real craftsmen.", name: "Khalid L." },
+        {
+          quote: "Best haircut I've had in Ajman. The attention to detail is on another level.",
+          name: "Yusuf B.",
+        },
+        {
+          quote: "The grooming package made my wedding day. Everything was calm, premium, on time.",
+          name: "Mohammed A.",
+        },
+        {
+          quote: "I switched to Casa six months ago and never looked back. Real craftsmen.",
+          name: "Khalid L.",
+        },
       ],
       visitEyebrow: "Visit Us",
       visitTitle: "Find Casa.",
@@ -120,8 +126,7 @@ export const DICT = {
     reservation: {
       pageEyebrow: "Reservation",
       pageTitle: "Book your chair.",
-      pageIntro:
-        "Pick a service, your barber, and a time that works. We'll confirm by WhatsApp.",
+      pageIntro: "Pick a service, your barber, and a time that works. We'll confirm by WhatsApp.",
       service: "Service",
       barber: "Barber",
       date: "Date",
@@ -145,14 +150,22 @@ export const DICT = {
     app: {
       eyebrow: "Coming Soon",
       title: "Casa Barber App.",
-      lead:
-        "Book a barber at home, register as a freelance barber, or connect your salon to receive more reservations. One app — for the whole grooming ecosystem.",
+      lead: "Book a barber at home, register as a freelance barber, or connect your salon to receive more reservations. One app — for the whole grooming ecosystem.",
       rolesEyebrow: "Built for everyone",
       rolesTitle: "Three sides. One app.",
       roles: [
-        { title: "Customers", text: "Book a Casa-vetted barber to your home in minutes. Same standards as the salon, on your sofa." },
-        { title: "Freelance Barbers", text: "Register as a freelance barber, set your rates, and let Casa send you clients in your area." },
-        { title: "Salons", text: "List your branch, manage your schedule, and receive new bookings from the Casa network." },
+        {
+          title: "Customers",
+          text: "Book a Casa-vetted barber to your home in minutes. Same standards as the salon, on your sofa.",
+        },
+        {
+          title: "Freelance Barbers",
+          text: "Register as a freelance barber, set your rates, and let Casa send you clients in your area.",
+        },
+        {
+          title: "Salons",
+          text: "List your branch, manage your schedule, and receive new bookings from the Casa network.",
+        },
       ],
       waitEyebrow: "Early Access",
       waitTitle: "Join the waiting list.",
@@ -173,11 +186,20 @@ export const DICT = {
       title: "Bookings",
       eyebrow: "Admin",
       empty: "No bookings yet.",
-      cols: { date: "Date", time: "Time", customer: "Customer", phone: "Phone", service: "Service", status: "Status", actions: "Actions" },
+      cols: {
+        date: "Date",
+        time: "Time",
+        customer: "Customer",
+        phone: "Phone",
+        service: "Service",
+        status: "Status",
+        actions: "Actions",
+      },
       confirm: "Confirm",
       cancel: "Cancel",
       signedInAs: (e: string) => `Signed in as ${e}`,
-      notAdmin: "You're signed in but not an admin. Ask a project owner to grant your account the admin role in Supabase.",
+      notAdmin:
+        "You're signed in but not an admin. Ask a project owner to grant your account the admin role in Supabase.",
     },
     login: {
       title: "Admin sign in",
@@ -230,12 +252,10 @@ export const DICT = {
       heroTitle1: "صالون رجالي",
       heroTitleAccent: "راقٍ",
       heroTitle2: "في كازا",
-      heroLead:
-        "قص شعر، عناية باللحية، منتجات تجميل، وحجز سهل — كل شيء في مكان واحد.",
+      heroLead: "قص شعر، عناية باللحية، منتجات تجميل، وحجز سهل — كل شيء في مكان واحد.",
       featuredEyebrow: "خدماتنا المميزة",
       featuredTitle: "عمل متقن، بلا استعجال.",
-      featuredIntro:
-        "قائمة قصيرة من الخدمات المصممة بعناية. كل كرسي، كل قصة، بنفس معايير كازا.",
+      featuredIntro: "قائمة قصيرة من الخدمات المصممة بعناية. كل كرسي، كل قصة، بنفس معايير كازا.",
       productsEyebrow: "منتجات التجميل",
       productsTitle: "خذ كازا معك إلى المنزل.",
       productsIntro: "مجموعة منتقاة من المنتجات التي نستخدمها ونثق بها.",
@@ -259,9 +279,18 @@ export const DICT = {
       testimonialsEyebrow: "كلام الزبائن",
       testimonialsTitle: "ماذا يقول ضيوفنا.",
       testimonials: [
-        { quote: "أفضل قصة شعر حصلت عليها في عجمان. الاهتمام بالتفاصيل في مستوى آخر.", name: "يوسف ب." },
-        { quote: "باقة العناية جعلت يوم زفافي مميزاً. كل شيء كان هادئاً، راقياً، وفي الوقت المحدد.", name: "محمد أ." },
-        { quote: "تحولت إلى كازا قبل ستة أشهر ولم أنظر إلى الوراء. حرفيون حقيقيون.", name: "خالد ل." },
+        {
+          quote: "أفضل قصة شعر حصلت عليها في عجمان. الاهتمام بالتفاصيل في مستوى آخر.",
+          name: "يوسف ب.",
+        },
+        {
+          quote: "باقة العناية جعلت يوم زفافي مميزاً. كل شيء كان هادئاً، راقياً، وفي الوقت المحدد.",
+          name: "محمد أ.",
+        },
+        {
+          quote: "تحولت إلى كازا قبل ستة أشهر ولم أنظر إلى الوراء. حرفيون حقيقيون.",
+          name: "خالد ل.",
+        },
       ],
       visitEyebrow: "زورونا",
       visitTitle: "تجدون كازا هنا.",
@@ -269,8 +298,7 @@ export const DICT = {
     services: {
       pageEyebrow: "خدماتنا",
       pageTitle: "مصممة للرجل العصري.",
-      pageIntro:
-        "من قصة كلاسيكية دقيقة إلى زيارة حلاق منزلية — اختر التجربة التي تناسب يومك.",
+      pageIntro: "من قصة كلاسيكية دقيقة إلى زيارة حلاق منزلية — اختر التجربة التي تناسب يومك.",
       detailAbout: "عن الخدمة",
       detailBenefits: "الفوائد",
       detailIncluded: "ما يشمله",
@@ -284,14 +312,12 @@ export const DICT = {
     products: {
       pageEyebrow: "منتجات التجميل",
       pageTitle: "خذ كازا معك إلى المنزل.",
-      pageIntro:
-        "مجموعة منتقاة نستخدمها يومياً. اطلب عبر واتساب — سنؤكد خلال دقائق.",
+      pageIntro: "مجموعة منتقاة نستخدمها يومياً. اطلب عبر واتساب — سنؤكد خلال دقائق.",
     },
     reservation: {
       pageEyebrow: "الحجز",
       pageTitle: "احجز كرسيك.",
-      pageIntro:
-        "اختر خدمة، حلاقك، ووقتاً يناسبك. سنؤكد عبر واتساب.",
+      pageIntro: "اختر خدمة، حلاقك، ووقتاً يناسبك. سنؤكد عبر واتساب.",
       service: "الخدمة",
       barber: "الحلاق",
       date: "التاريخ",
@@ -315,13 +341,18 @@ export const DICT = {
     app: {
       eyebrow: "قريباً",
       title: "تطبيق كازا للحلاقين.",
-      lead:
-        "احجز حلاقاً في منزلك، سجّل كحلاق مستقل، أو اربط صالونك لتلقي المزيد من الحجوزات. تطبيق واحد — لمنظومة العناية بالكامل.",
+      lead: "احجز حلاقاً في منزلك، سجّل كحلاق مستقل، أو اربط صالونك لتلقي المزيد من الحجوزات. تطبيق واحد — لمنظومة العناية بالكامل.",
       rolesEyebrow: "مصمم للجميع",
       rolesTitle: "ثلاث جهات. تطبيق واحد.",
       roles: [
-        { title: "الزبائن", text: "احجز حلاقاً معتمداً من كازا إلى منزلك خلال دقائق. نفس معايير الصالون، على أريكتك." },
-        { title: "الحلاقون المستقلون", text: "سجّل كحلاق مستقل، حدد أسعارك، ودع كازا ترسل لك زبائن في منطقتك." },
+        {
+          title: "الزبائن",
+          text: "احجز حلاقاً معتمداً من كازا إلى منزلك خلال دقائق. نفس معايير الصالون، على أريكتك.",
+        },
+        {
+          title: "الحلاقون المستقلون",
+          text: "سجّل كحلاق مستقل، حدد أسعارك، ودع كازا ترسل لك زبائن في منطقتك.",
+        },
         { title: "الصالونات", text: "اعرض فرعك، أدر جدولك، واستقبل حجوزات جديدة من شبكة كازا." },
       ],
       waitEyebrow: "وصول مبكر",
@@ -343,11 +374,20 @@ export const DICT = {
       title: "الحجوزات",
       eyebrow: "الإدارة",
       empty: "لا توجد حجوزات بعد.",
-      cols: { date: "التاريخ", time: "الوقت", customer: "الزبون", phone: "الهاتف", service: "الخدمة", status: "الحالة", actions: "الإجراءات" },
+      cols: {
+        date: "التاريخ",
+        time: "الوقت",
+        customer: "الزبون",
+        phone: "الهاتف",
+        service: "الخدمة",
+        status: "الحالة",
+        actions: "الإجراءات",
+      },
       confirm: "تأكيد",
       cancel: "إلغاء",
       signedInAs: (e: string) => `مسجّل الدخول كـ ${e}`,
-      notAdmin: "أنت مسجّل الدخول لكن لست مديراً. اطلب من مالك المشروع منح حسابك صلاحية الإدارة في Supabase.",
+      notAdmin:
+        "أنت مسجّل الدخول لكن لست مديراً. اطلب من مالك المشروع منح حسابك صلاحية الإدارة في Supabase.",
     },
     login: {
       title: "دخول الإدارة",

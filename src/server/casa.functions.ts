@@ -1,14 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabaseServer } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-// ===== Public reads (use admin client server-side; data is public anyway) =====
+// ===== Public reads =====
 
 export const listServices = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabaseServer
     .from("services")
-    .select("id, slug_en, slug_ar, title_en, title_ar, short_description_en, short_description_ar, description_en, description_ar, price, duration_minutes, image_url")
+    .select(
+      "id, slug_en, slug_ar, title_en, title_ar, short_description_en, short_description_ar, description_en, description_ar, price, duration_minutes, image_url",
+    )
     .eq("is_active", true)
     .order("price", { ascending: true });
   if (error) throw new Error(error.message);
@@ -21,7 +23,7 @@ export const getServiceBySlug = createServerFn({ method: "GET" })
   )
   .handler(async ({ data }) => {
     const col = data.lang === "ar" ? "slug_ar" : "slug_en";
-    const { data: row, error } = await supabaseAdmin
+    const { data: row, error } = await supabaseServer
       .from("services")
       .select("*")
       .eq(col, data.slug)
@@ -32,9 +34,11 @@ export const getServiceBySlug = createServerFn({ method: "GET" })
   });
 
 export const listProducts = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabaseServer
     .from("products")
-    .select("id, slug_en, slug_ar, name_en, name_ar, description_en, description_ar, price, image_url, whatsapp_order_text_en, whatsapp_order_text_ar")
+    .select(
+      "id, slug_en, slug_ar, name_en, name_ar, description_en, description_ar, price, image_url, whatsapp_order_text_en, whatsapp_order_text_ar",
+    )
     .eq("is_active", true)
     .order("price", { ascending: true });
   if (error) throw new Error(error.message);
@@ -42,7 +46,7 @@ export const listProducts = createServerFn({ method: "GET" }).handler(async () =
 });
 
 export const listBarbers = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabaseServer
     .from("barbers")
     .select("id, name_en, name_ar, bio_en, bio_ar, photo_url")
     .eq("is_active", true);
@@ -66,7 +70,7 @@ const createBookingInput = z.object({
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => createBookingInput.parse(input))
   .handler(async ({ data }) => {
-    const { error } = await supabaseAdmin.from("bookings").insert({
+    const { error } = await supabaseServer.from("bookings").insert({
       service_id: data.service_id,
       barber_id: data.barber_id ?? null,
       customer_name: data.customer_name,
@@ -108,25 +112,27 @@ export const listBookingsAdmin = createServerFn({ method: "GET" })
       .order("booking_time", { ascending: false })
       .limit(500);
     if (error) throw new Error(error.message);
-    // Hydrate service names server-side using admin client (services are public anyway).
-    const { data: services } = await supabaseAdmin
+    // Hydrate service names server-side using public data.
+    const { data: services } = await supabaseServer
       .from("services")
       .select("id, title_en, title_ar");
     const map = new Map((services ?? []).map((s) => [s.id, s]));
     return (data ?? []).map((b) => ({
       ...b,
-      service_title_en: b.service_id ? map.get(b.service_id)?.title_en ?? null : null,
-      service_title_ar: b.service_id ? map.get(b.service_id)?.title_ar ?? null : null,
+      service_title_en: b.service_id ? (map.get(b.service_id)?.title_en ?? null) : null,
+      service_title_ar: b.service_id ? (map.get(b.service_id)?.title_ar ?? null) : null,
     }));
   });
 
 export const updateBookingStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      status: z.enum(["pending", "confirmed", "cancelled", "completed"]),
-    }).parse(input),
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["pending", "confirmed", "cancelled", "completed"]),
+      })
+      .parse(input),
   )
   .handler(async ({ context, data }) => {
     const { supabase } = context;
@@ -140,7 +146,7 @@ export const updateBookingStatus = createServerFn({ method: "POST" })
 
 // ===== Sitemap data =====
 export const getSitemapEntries = createServerFn({ method: "GET" }).handler(async () => {
-  const { data: services } = await supabaseAdmin
+  const { data: services } = await supabaseServer
     .from("services")
     .select("slug_en, slug_ar")
     .eq("is_active", true);

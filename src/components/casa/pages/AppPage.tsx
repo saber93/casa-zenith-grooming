@@ -27,9 +27,15 @@ export function AppPage({ lang }: { lang: Lang }) {
   return (
     <>
       <section className="relative isolate overflow-hidden border-b border-border/60">
-        <img src={placeholder} alt={tt.app.title} className="absolute inset-0 -z-10 h-full w-full object-cover opacity-30" />
+        <img
+          src={placeholder}
+          alt={tt.app.title}
+          className="absolute inset-0 -z-10 h-full w-full object-cover opacity-30"
+        />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/40 via-background/80 to-background" />
-        <div className={`mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-28 md:grid-cols-2 md:px-8 md:pb-28 md:pt-36 ${lang === "ar" ? "text-right" : ""}`}>
+        <div
+          className={`mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-28 md:grid-cols-2 md:px-8 md:pb-28 md:pt-36 ${lang === "ar" ? "text-right" : ""}`}
+        >
           <div>
             <div className="label-eyebrow mb-5 inline-flex items-center gap-2">
               <Smartphone className="h-3.5 w-3.5" /> {tt.app.eyebrow}
@@ -38,7 +44,11 @@ export function AppPage({ lang }: { lang: Lang }) {
             <p className="mt-6 max-w-lg text-lg text-muted-foreground">{tt.app.lead}</p>
           </div>
           <div className="relative mx-auto aspect-[9/16] w-64 overflow-hidden rounded-[2rem] border-4 border-foreground/10 bg-background shadow-elegant md:w-72">
-            <img src={placeholder} alt="App preview" className="h-full w-full object-cover opacity-80" />
+            <img
+              src={placeholder}
+              alt="App preview"
+              className="h-full w-full object-cover opacity-80"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/95" />
           </div>
         </div>
@@ -49,7 +59,10 @@ export function AppPage({ lang }: { lang: Lang }) {
           {tt.app.roles.map((r, i) => {
             const Icon = ICONS[i];
             return (
-              <div key={r.title} className="rounded-lg border border-border/60 bg-card p-7 transition-colors hover:border-primary/60">
+              <div
+                key={r.title}
+                className="rounded-lg border border-border/60 bg-card p-7 transition-colors hover:border-primary/60"
+              >
                 <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <Icon className="h-6 w-6" />
                 </div>

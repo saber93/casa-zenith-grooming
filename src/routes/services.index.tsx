@@ -9,5 +9,9 @@ export const Route = createFileRoute("/services/")({
     const seo = pageSeoCopy("en", "services");
     return buildPageHead({ lang: "en", pathWithoutLocale: "/services", ...seo });
   },
-  component: () => <ServicesPage lang="en" services={Route.useLoaderData()} />,
+  component: ServicesIndexRouteComponent,
 });
+
+function ServicesIndexRouteComponent() {
+  return <ServicesPage lang="en" services={Route.useLoaderData()} />;
+}

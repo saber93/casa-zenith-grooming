@@ -24,7 +24,9 @@ export function ProductCard({ product, lang }: { product: ProductRow; lang: Lang
   const desc = (lang === "ar" ? product.description_ar : product.description_en) ?? "";
   const waText =
     (lang === "ar" ? product.whatsapp_order_text_ar : product.whatsapp_order_text_en) ||
-    (lang === "ar" ? `مرحباً ${CASA.nameAr}، أود طلب: ${name}` : `Hi ${CASA.name}, I'd like to order: ${name}`);
+    (lang === "ar"
+      ? `مرحباً ${CASA.nameAr}، أود طلب: ${name}`
+      : `Hi ${CASA.name}, I'd like to order: ${name}`);
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/60">
