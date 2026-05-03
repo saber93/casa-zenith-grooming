@@ -1,8 +1,8 @@
 import { CASA, waLink } from "@/lib/casa";
 import { MessageCircle } from "lucide-react";
-import placeholder from "/placeholder.jpg?url";
 import type { Lang } from "@/lib/i18n";
 import { t, formatPrice } from "@/lib/i18n";
+import { productFallbackImage } from "@/lib/casa-images";
 
 export type ProductRow = {
   id: string;
@@ -32,7 +32,7 @@ export function ProductCard({ product, lang }: { product: ProductRow; lang: Lang
     <div className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/60">
       <div className="relative aspect-square overflow-hidden bg-surface">
         <img
-          src={product.image_url || placeholder}
+          src={product.image_url || productFallbackImage(product.slug_en)}
           alt={name}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

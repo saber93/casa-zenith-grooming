@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
-import placeholder from "/placeholder.jpg?url";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t, formatPrice } from "@/lib/i18n";
+import { serviceFallbackImage } from "@/lib/casa-images";
 
 export type ServiceRow = {
   id: string;
@@ -29,7 +29,7 @@ export function ServiceCard({ service, lang }: { service: ServiceRow; lang: Lang
     >
       <div className="aspect-[4/3] overflow-hidden">
         <img
-          src={service.image_url || placeholder}
+          src={service.image_url || serviceFallbackImage(service.slug_en)}
           alt={title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

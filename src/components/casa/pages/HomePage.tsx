@@ -8,6 +8,7 @@ import { Calendar, Clock, MapPin, Smartphone, Star } from "lucide-react";
 import placeholder from "/placeholder.jpg?url";
 import type { Lang } from "@/lib/i18n";
 import { t, localePath } from "@/lib/i18n";
+import { SALON_VISIT_IMAGE } from "@/lib/casa-images";
 
 export function HomePage({
   lang,
@@ -236,7 +237,7 @@ export function HomePage({
             </div>
             <div className="aspect-[4/3] overflow-hidden rounded-lg border border-border/60 bg-card">
               <img
-                src={placeholder}
+                src={SALON_VISIT_IMAGE}
                 alt={tt.home.visitTitle}
                 loading="lazy"
                 className="h-full w-full object-cover opacity-80"

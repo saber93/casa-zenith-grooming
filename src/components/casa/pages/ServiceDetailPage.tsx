@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Section } from "@/components/casa/Section";
 import { Check, Clock, Tag } from "lucide-react";
-import placeholder from "/placeholder.jpg?url";
 import type { Lang } from "@/lib/i18n";
 import { t, formatPrice, localePath } from "@/lib/i18n";
+import { serviceFallbackImage } from "@/lib/casa-images";
 
 export type ServiceDetail = {
   id: string;
@@ -38,7 +38,7 @@ export function ServiceDetailPage({ lang, service }: { lang: Lang; service: Serv
     <>
       <section className="relative isolate overflow-hidden border-b border-border/60">
         <img
-          src={service.image_url || placeholder}
+          src={service.image_url || serviceFallbackImage(service.slug_en)}
           alt={title}
           className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
         />
