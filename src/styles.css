@@ -43,6 +43,8 @@
 
   --shadow-elegant: 0 30px 80px -20px oklch(0 0 0 / 0.6);
   --shadow-glow: 0 0 40px -10px rgb(254 10 0 / 0.5);
+  --shadow-red-accent-text: 0 0 1px rgb(255 255 255 / 0.42);
+  --shadow-red-accent-filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.3));
 
   --animate-fade-in: fade-in 0.7s ease-out both;
   --animate-slide-up: slide-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -190,6 +192,26 @@
     text-transform: uppercase;
     color: var(--color-ember);
     font-weight: 500;
+    text-shadow: var(--shadow-red-accent-text);
+  }
+  .text-primary {
+    text-shadow: var(--shadow-red-accent-text);
+  }
+  .text-primary svg,
+  svg.text-primary {
+    filter: var(--shadow-red-accent-filter);
+  }
+  .border-primary,
+  [class~="border-primary/20"],
+  [class~="border-primary/25"],
+  [class~="border-primary/30"],
+  [class~="border-primary/40"],
+  [class~="border-primary/50"],
+  [class~="border-primary/60"] {
+    filter: var(--shadow-red-accent-filter);
+  }
+  .hover\:border-primary\/60:hover {
+    filter: var(--shadow-red-accent-filter);
   }
   .reveal {
     opacity: 0;
