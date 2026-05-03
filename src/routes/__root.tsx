@@ -115,16 +115,21 @@ function RootComponent() {
   const lang = useRouterState({
     select: (state) => langFromPathname(state.location.pathname),
   });
+  const isQueueDisplay = useRouterState({
+    select: (state) =>
+      state.location.pathname === "/admin/queue-display" ||
+      state.location.pathname === "/ar/admin/queue-display",
+  });
 
   return (
     <AuthProvider>
       <div className="flex min-h-screen flex-col bg-background text-foreground">
-        <Header lang={lang} />
+        {!isQueueDisplay && <Header lang={lang} />}
         <main className="flex-1">
           <Outlet />
         </main>
-        <Footer lang={lang} />
-        <WhatsAppFab lang={lang} />
+        {!isQueueDisplay && <Footer lang={lang} />}
+        {!isQueueDisplay && <WhatsAppFab lang={lang} />}
         <Toaster theme="dark" />
       </div>
     </AuthProvider>

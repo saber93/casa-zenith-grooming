@@ -10,9 +10,11 @@ export function Footer({ lang }: { lang: Lang }) {
     <footer className="border-t border-border/60 bg-card">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 md:grid-cols-4 md:px-8">
         <div className="md:col-span-2">
-          <div className="font-serif text-3xl">
-            {lang === "ar" ? CASA.fullNameAr : CASA.fullName}
-          </div>
+          <img
+            src="/casa-logo.jpeg"
+            alt={lang === "ar" ? "شعار كازا" : "Casa logo"}
+            className="h-24 w-auto object-contain"
+          />
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">{tt.footer.tagline}</p>
         </div>
 

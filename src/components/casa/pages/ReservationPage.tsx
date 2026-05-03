@@ -5,6 +5,7 @@ import { CalendarIcon, Check } from "lucide-react";
 import { toast } from "sonner";
 
 import { Section } from "@/components/casa/Section";
+import { TimeSlotPicker } from "@/components/casa/TimeSlotPicker";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -22,23 +23,11 @@ import { cn } from "@/lib/utils";
 
 import type { Lang } from "@/lib/i18n";
 import { t, formatPrice } from "@/lib/i18n";
+import { bookingConflictMessage, isBookingConflictError } from "@/lib/bookings";
 import type { ServiceRow } from "@/components/casa/ServiceCard";
 import { createBooking } from "@/server/casa.functions";
 
 type Barber = { id: string; name_en: string; name_ar: string };
-
-const slots = [
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "13:00",
-  "14:00",
-  "15:30",
-  "17:00",
-  "18:30",
-  "20:00",
-];
 
 export function ReservationPage({
   lang,
@@ -77,6 +66,7 @@ export function ReservationPage({
     [services, serviceId],
   );
   const selectedBarber = useMemo(() => barbers.find((b) => b.id === barberId), [barbers, barberId]);
+  const bookingDate = useMemo(() => (date ? format(date, "yyyy-MM-dd") : ""), [date]);
 
   const serviceLabel = (s: ServiceRow) => (lang === "ar" ? s.title_ar : s.title_en);
   const barberLabel = (b: Barber) => (lang === "ar" ? b.name_ar : b.name_en);
@@ -112,7 +102,11 @@ export function ReservationPage({
         description: `${summary.service} · ${summary.date} ${summary.slot}`,
       });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Error";
+      const msg = isBookingConflictError(err)
+        ? bookingConflictMessage(lang)
+        : err instanceof Error
+          ? err.message
+          : tt.common.error;
       toast.error(msg);
     } finally {
       setSubmitting(false);
@@ -238,23 +232,13 @@ export function ReservationPage({
 
             <div className="space-y-2">
               <Label>{tt.reservation.timeSlot}</Label>
-              <div className="grid grid-cols-3 gap-2" dir="ltr">
-                {slots.map((time) => (
-                  <button
-                    type="button"
-                    key={time}
-                    onClick={() => setSlot(time)}
-                    className={cn(
-                      "rounded-md border py-2.5 text-sm transition-colors",
-                      slot === time
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border/60 text-muted-foreground hover:border-primary/60 hover:text-foreground",
-                    )}
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
+              <TimeSlotPicker
+                lang={lang}
+                barberId={barberId}
+                date={bookingDate}
+                selectedTime={slot}
+                onChange={setSlot}
+              />
             </div>
           </div>
 

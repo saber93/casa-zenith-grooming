@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReservationRouteImport } from './routes/reservation'
+import { Route as QueueRouteImport } from './routes/queue'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/app'
@@ -18,17 +19,31 @@ import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ArIndexRouteImport } from './routes/ar.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ArReservationRouteImport } from './routes/ar.reservation'
+import { Route as ArQueueRouteImport } from './routes/ar.queue'
 import { Route as ArProductsRouteImport } from './routes/ar.products'
 import { Route as ArLoginRouteImport } from './routes/ar.login'
 import { Route as ArAppRouteImport } from './routes/ar.app'
+import { Route as AdminQueueDisplayRouteImport } from './routes/admin.queue-display'
+import { Route as AdminQueueAnalyticsRouteImport } from './routes/admin.queue-analytics'
+import { Route as AdminQueueRouteImport } from './routes/admin.queue'
 import { Route as AdminBookingsRouteImport } from './routes/admin.bookings'
+import { Route as AdminBarberWorkspaceRouteImport } from './routes/admin.barber-workspace'
 import { Route as ArServicesIndexRouteImport } from './routes/ar.services.index'
 import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
+import { Route as ArAdminQueueDisplayRouteImport } from './routes/ar.admin.queue-display'
+import { Route as ArAdminQueueAnalyticsRouteImport } from './routes/ar.admin.queue-analytics'
+import { Route as ArAdminQueueRouteImport } from './routes/ar.admin.queue'
 import { Route as ArAdminBookingsRouteImport } from './routes/ar.admin.bookings'
+import { Route as ArAdminBarberWorkspaceRouteImport } from './routes/ar.admin.barber-workspace'
 
 const ReservationRoute = ReservationRouteImport.update({
   id: '/reservation',
   path: '/reservation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QueueRoute = QueueRouteImport.update({
+  id: '/queue',
+  path: '/queue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -71,6 +86,11 @@ const ArReservationRoute = ArReservationRouteImport.update({
   path: '/ar/reservation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArQueueRoute = ArQueueRouteImport.update({
+  id: '/ar/queue',
+  path: '/ar/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArProductsRoute = ArProductsRouteImport.update({
   id: '/ar/products',
   path: '/ar/products',
@@ -86,9 +106,29 @@ const ArAppRoute = ArAppRouteImport.update({
   path: '/ar/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminQueueDisplayRoute = AdminQueueDisplayRouteImport.update({
+  id: '/admin/queue-display',
+  path: '/admin/queue-display',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminQueueAnalyticsRoute = AdminQueueAnalyticsRouteImport.update({
+  id: '/admin/queue-analytics',
+  path: '/admin/queue-analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminQueueRoute = AdminQueueRouteImport.update({
+  id: '/admin/queue',
+  path: '/admin/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBookingsRoute = AdminBookingsRouteImport.update({
   id: '/admin/bookings',
   path: '/admin/bookings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBarberWorkspaceRoute = AdminBarberWorkspaceRouteImport.update({
+  id: '/admin/barber-workspace',
+  path: '/admin/barber-workspace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArServicesIndexRoute = ArServicesIndexRouteImport.update({
@@ -101,9 +141,29 @@ const ArServicesSlugRoute = ArServicesSlugRouteImport.update({
   path: '/ar/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArAdminQueueDisplayRoute = ArAdminQueueDisplayRouteImport.update({
+  id: '/ar/admin/queue-display',
+  path: '/ar/admin/queue-display',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArAdminQueueAnalyticsRoute = ArAdminQueueAnalyticsRouteImport.update({
+  id: '/ar/admin/queue-analytics',
+  path: '/ar/admin/queue-analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArAdminQueueRoute = ArAdminQueueRouteImport.update({
+  id: '/ar/admin/queue',
+  path: '/ar/admin/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArAdminBookingsRoute = ArAdminBookingsRouteImport.update({
   id: '/ar/admin/bookings',
   path: '/ar/admin/bookings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArAdminBarberWorkspaceRoute = ArAdminBarberWorkspaceRouteImport.update({
+  id: '/ar/admin/barber-workspace',
+  path: '/ar/admin/barber-workspace',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -112,16 +172,26 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
+  '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/queue': typeof AdminQueueRoute
+  '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
+  '/admin/queue-display': typeof AdminQueueDisplayRoute
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/queue': typeof ArAdminQueueRoute
+  '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
+  '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
@@ -130,16 +200,26 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
+  '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/queue': typeof AdminQueueRoute
+  '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
+  '/admin/queue-display': typeof AdminQueueDisplayRoute
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar': typeof ArIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/queue': typeof ArAdminQueueRoute
+  '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
+  '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services': typeof ArServicesIndexRoute
 }
@@ -149,16 +229,26 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
+  '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/queue': typeof AdminQueueRoute
+  '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
+  '/admin/queue-display': typeof AdminQueueDisplayRoute
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/queue': typeof ArAdminQueueRoute
+  '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
+  '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
@@ -169,16 +259,26 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/products'
+    | '/queue'
     | '/reservation'
+    | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/queue'
+    | '/admin/queue-analytics'
+    | '/admin/queue-display'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/queue'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
+    | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/queue'
+    | '/ar/admin/queue-analytics'
+    | '/ar/admin/queue-display'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesByTo: FileRoutesByTo
@@ -187,16 +287,26 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/products'
+    | '/queue'
     | '/reservation'
+    | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/queue'
+    | '/admin/queue-analytics'
+    | '/admin/queue-display'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/queue'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar'
     | '/services'
+    | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/queue'
+    | '/ar/admin/queue-analytics'
+    | '/ar/admin/queue-display'
     | '/ar/services/$slug'
     | '/ar/services'
   id:
@@ -205,16 +315,26 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/products'
+    | '/queue'
     | '/reservation'
+    | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/queue'
+    | '/admin/queue-analytics'
+    | '/admin/queue-display'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/queue'
     | '/ar/reservation'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
+    | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/queue'
+    | '/ar/admin/queue-analytics'
+    | '/ar/admin/queue-display'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesById: FileRoutesById
@@ -224,16 +344,26 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
+  QueueRoute: typeof QueueRoute
   ReservationRoute: typeof ReservationRoute
+  AdminBarberWorkspaceRoute: typeof AdminBarberWorkspaceRoute
   AdminBookingsRoute: typeof AdminBookingsRoute
+  AdminQueueRoute: typeof AdminQueueRoute
+  AdminQueueAnalyticsRoute: typeof AdminQueueAnalyticsRoute
+  AdminQueueDisplayRoute: typeof AdminQueueDisplayRoute
   ArAppRoute: typeof ArAppRoute
   ArLoginRoute: typeof ArLoginRoute
   ArProductsRoute: typeof ArProductsRoute
+  ArQueueRoute: typeof ArQueueRoute
   ArReservationRoute: typeof ArReservationRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   ArIndexRoute: typeof ArIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ArAdminBarberWorkspaceRoute: typeof ArAdminBarberWorkspaceRoute
   ArAdminBookingsRoute: typeof ArAdminBookingsRoute
+  ArAdminQueueRoute: typeof ArAdminQueueRoute
+  ArAdminQueueAnalyticsRoute: typeof ArAdminQueueAnalyticsRoute
+  ArAdminQueueDisplayRoute: typeof ArAdminQueueDisplayRoute
   ArServicesSlugRoute: typeof ArServicesSlugRoute
   ArServicesIndexRoute: typeof ArServicesIndexRoute
 }
@@ -245,6 +375,13 @@ declare module '@tanstack/react-router' {
       path: '/reservation'
       fullPath: '/reservation'
       preLoaderRoute: typeof ReservationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/queue': {
+      id: '/queue'
+      path: '/queue'
+      fullPath: '/queue'
+      preLoaderRoute: typeof QueueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -303,6 +440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArReservationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/queue': {
+      id: '/ar/queue'
+      path: '/ar/queue'
+      fullPath: '/ar/queue'
+      preLoaderRoute: typeof ArQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ar/products': {
       id: '/ar/products'
       path: '/ar/products'
@@ -324,11 +468,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArAppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/queue-display': {
+      id: '/admin/queue-display'
+      path: '/admin/queue-display'
+      fullPath: '/admin/queue-display'
+      preLoaderRoute: typeof AdminQueueDisplayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/queue-analytics': {
+      id: '/admin/queue-analytics'
+      path: '/admin/queue-analytics'
+      fullPath: '/admin/queue-analytics'
+      preLoaderRoute: typeof AdminQueueAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/queue': {
+      id: '/admin/queue'
+      path: '/admin/queue'
+      fullPath: '/admin/queue'
+      preLoaderRoute: typeof AdminQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/bookings': {
       id: '/admin/bookings'
       path: '/admin/bookings'
       fullPath: '/admin/bookings'
       preLoaderRoute: typeof AdminBookingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/barber-workspace': {
+      id: '/admin/barber-workspace'
+      path: '/admin/barber-workspace'
+      fullPath: '/admin/barber-workspace'
+      preLoaderRoute: typeof AdminBarberWorkspaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ar/services/': {
@@ -345,11 +517,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/admin/queue-display': {
+      id: '/ar/admin/queue-display'
+      path: '/ar/admin/queue-display'
+      fullPath: '/ar/admin/queue-display'
+      preLoaderRoute: typeof ArAdminQueueDisplayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/admin/queue-analytics': {
+      id: '/ar/admin/queue-analytics'
+      path: '/ar/admin/queue-analytics'
+      fullPath: '/ar/admin/queue-analytics'
+      preLoaderRoute: typeof ArAdminQueueAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/admin/queue': {
+      id: '/ar/admin/queue'
+      path: '/ar/admin/queue'
+      fullPath: '/ar/admin/queue'
+      preLoaderRoute: typeof ArAdminQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ar/admin/bookings': {
       id: '/ar/admin/bookings'
       path: '/ar/admin/bookings'
       fullPath: '/ar/admin/bookings'
       preLoaderRoute: typeof ArAdminBookingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/admin/barber-workspace': {
+      id: '/ar/admin/barber-workspace'
+      path: '/ar/admin/barber-workspace'
+      fullPath: '/ar/admin/barber-workspace'
+      preLoaderRoute: typeof ArAdminBarberWorkspaceRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -360,16 +560,26 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   LoginRoute: LoginRoute,
   ProductsRoute: ProductsRoute,
+  QueueRoute: QueueRoute,
   ReservationRoute: ReservationRoute,
+  AdminBarberWorkspaceRoute: AdminBarberWorkspaceRoute,
   AdminBookingsRoute: AdminBookingsRoute,
+  AdminQueueRoute: AdminQueueRoute,
+  AdminQueueAnalyticsRoute: AdminQueueAnalyticsRoute,
+  AdminQueueDisplayRoute: AdminQueueDisplayRoute,
   ArAppRoute: ArAppRoute,
   ArLoginRoute: ArLoginRoute,
   ArProductsRoute: ArProductsRoute,
+  ArQueueRoute: ArQueueRoute,
   ArReservationRoute: ArReservationRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   ArIndexRoute: ArIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ArAdminBarberWorkspaceRoute: ArAdminBarberWorkspaceRoute,
   ArAdminBookingsRoute: ArAdminBookingsRoute,
+  ArAdminQueueRoute: ArAdminQueueRoute,
+  ArAdminQueueAnalyticsRoute: ArAdminQueueAnalyticsRoute,
+  ArAdminQueueDisplayRoute: ArAdminQueueDisplayRoute,
   ArServicesSlugRoute: ArServicesSlugRoute,
   ArServicesIndexRoute: ArServicesIndexRoute,
 }

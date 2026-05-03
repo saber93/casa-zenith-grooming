@@ -42,7 +42,7 @@
   --color-surface-2: var(--surface-2);
 
   --shadow-elegant: 0 30px 80px -20px oklch(0 0 0 / 0.6);
-  --shadow-glow: 0 0 40px -10px oklch(0.65 0.18 35 / 0.5);
+  --shadow-glow: 0 0 40px -10px rgb(254 10 0 / 0.5);
 
   --animate-fade-in: fade-in 0.7s ease-out both;
   --animate-slide-up: slide-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -81,11 +81,11 @@
 :root {
   --radius: 0.5rem;
 
-  /* Casa — charcoal & ember dark theme */
+  /* Casa — charcoal & logo-red dark theme */
   --background: oklch(0.18 0.005 30); /* #1a1a1a */
   --foreground: oklch(0.96 0.012 80); /* warm ivory */
   --ivory: oklch(0.96 0.012 80);
-  --ember: oklch(0.66 0.18 35); /* #e85d3a */
+  --ember: #fe0a00;
 
   --surface: oklch(0.235 0.006 30); /* #2d2d2d */
   --surface-2: oklch(0.3 0.006 30);
@@ -95,7 +95,7 @@
   --popover: oklch(0.215 0.005 30);
   --popover-foreground: oklch(0.96 0.012 80);
 
-  --primary: oklch(0.66 0.18 35); /* ember */
+  --primary: #fe0a00;
   --primary-foreground: oklch(0.16 0.005 30);
 
   --secondary: oklch(0.26 0.006 30);
@@ -104,7 +104,7 @@
   --muted: oklch(0.26 0.006 30);
   --muted-foreground: oklch(0.7 0.01 60);
 
-  --accent: oklch(0.66 0.18 35);
+  --accent: #fe0a00;
   --accent-foreground: oklch(0.16 0.005 30);
 
   --destructive: oklch(0.55 0.2 25);
@@ -112,16 +112,16 @@
 
   --border: oklch(0.32 0.005 30 / 0.8);
   --input: oklch(0.3 0.005 30);
-  --ring: oklch(0.66 0.18 35);
+  --ring: #fe0a00;
 
   --sidebar: oklch(0.215 0.005 30);
   --sidebar-foreground: oklch(0.96 0.012 80);
-  --sidebar-primary: oklch(0.66 0.18 35);
+  --sidebar-primary: #fe0a00;
   --sidebar-primary-foreground: oklch(0.16 0.005 30);
   --sidebar-accent: oklch(0.26 0.006 30);
   --sidebar-accent-foreground: oklch(0.96 0.012 80);
   --sidebar-border: oklch(0.32 0.005 30 / 0.8);
-  --sidebar-ring: oklch(0.66 0.18 35);
+  --sidebar-ring: #fe0a00;
 }
 
 .dark {

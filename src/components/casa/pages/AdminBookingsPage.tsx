@@ -4,6 +4,7 @@ import { AlertCircle, CalendarPlus, LogOut, MessageCircle, RefreshCw } from "luc
 import { toast } from "sonner";
 
 import { Section } from "@/components/casa/Section";
+import { TimeSlotPicker } from "@/components/casa/TimeSlotPicker";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,12 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { CASA, waLink } from "@/lib/casa";
+import {
+  bookingConflictMessage,
+  createAdminBooking,
+  isBookingConflictError,
+  type BookingInsert,
+} from "@/lib/bookings";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
@@ -42,7 +49,6 @@ import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
 
 type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
-type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
 type ServiceRow = Pick<
   Database["public"]["Tables"]["services"]["Row"],
   "id" | "title_en" | "title_ar"
@@ -273,7 +279,7 @@ export function AdminBookingsPage({ lang }: { lang: Lang }) {
         language: manualForm.language,
         status: manualForm.status,
       };
-      const { data, error } = await supabase.from("bookings").insert(payload).select("*").single();
+      const { data, error } = await createAdminBooking(payload);
       if (error) throw error;
 
       setBookings((current) => [hydrateBooking(data as BookingRow, services, barbers), ...current]);
@@ -282,7 +288,11 @@ export function AdminBookingsPage({ lang }: { lang: Lang }) {
       resetManualForm();
       toast.success(tt.admin.reservationAdded);
     } catch (error) {
-      const message = error instanceof Error ? error.message : tt.common.error;
+      const message = isBookingConflictError(error)
+        ? bookingConflictMessage(lang)
+        : error instanceof Error
+          ? error.message
+          : tt.common.error;
       toast.error(message);
     } finally {
       setCreatingManual(false);
@@ -373,6 +383,9 @@ export function AdminBookingsPage({ lang }: { lang: Lang }) {
           <span className="text-xs text-muted-foreground">
             {tt.admin.signedInAs(auth.user.email ?? "—")}
           </span>
+          <Button asChild variant="outline" size="sm">
+            <Link to={localePath(lang, "/admin/queue")}>{tt.queue.title}</Link>
+          </Button>
           <Button size="sm" onClick={openManualReservation}>
             <CalendarPlus /> {tt.admin.addReservation}
           </Button>
@@ -466,15 +479,13 @@ export function AdminBookingsPage({ lang }: { lang: Lang }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="manual-time">{tt.reservation.timeSlot}</Label>
-                <Input
-                  id="manual-time"
-                  type="time"
-                  step="300"
-                  value={manualForm.bookingTime}
-                  onChange={(event) => setManualField("bookingTime", event.target.value)}
-                  dir="ltr"
-                  required
+                <Label>{tt.reservation.timeSlot}</Label>
+                <TimeSlotPicker
+                  lang={lang}
+                  barberId={manualForm.barberId === NO_BARBER ? null : manualForm.barberId}
+                  date={manualForm.bookingDate}
+                  selectedTime={manualForm.bookingTime}
+                  onChange={(value) => setManualField("bookingTime", value)}
                 />
               </div>
               <div className="space-y-2">

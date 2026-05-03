@@ -1,7 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { CASA } from "@/lib/casa";
 import type { Lang } from "@/lib/i18n";
 import { t, localePath } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/casa/LanguageSwitcher";
@@ -19,8 +18,16 @@ export function Header({ lang }: { lang: Lang }) {
     { to: localePath(lang, "/services"), label: tt.nav.services },
     { to: localePath(lang, "/products"), label: tt.nav.products },
     { to: localePath(lang, "/reservation"), label: tt.nav.reservation },
+    { to: localePath(lang, "/queue"), label: tt.nav.queue },
     { to: localePath(lang, "/app"), label: tt.nav.app },
-    ...(isAdmin ? [{ to: localePath(lang, "/admin/bookings"), label: tt.nav.admin }] : []),
+    ...(isAdmin
+      ? [
+          { to: localePath(lang, "/admin/bookings"), label: tt.nav.admin },
+          { to: localePath(lang, "/admin/queue"), label: tt.queue.title },
+          { to: localePath(lang, "/admin/barber-workspace"), label: tt.barberWorkspace.title },
+          { to: localePath(lang, "/admin/queue-analytics"), label: tt.queueAnalytics.title },
+        ]
+      : []),
   ];
 
   const isActive = (href: string, exact?: boolean) =>
@@ -36,15 +43,15 @@ export function Header({ lang }: { lang: Lang }) {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <Link
           to={localePath(lang, "/")}
-          className="flex items-baseline gap-2"
+          className="flex items-center"
           onClick={() => setOpen(false)}
+          aria-label={lang === "ar" ? "الصفحة الرئيسية لكازا" : "Casa home"}
         >
-          <span className="font-serif text-2xl tracking-tight text-foreground">
-            {lang === "ar" ? CASA.nameAr : CASA.name}
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.3em] text-muted-foreground sm:inline">
-            {lang === "ar" ? CASA.taglineAr : "Gents Grooming"}
-          </span>
+          <img
+            src="/casa-logo.jpeg"
+            alt={lang === "ar" ? "شعار كازا" : "Casa logo"}
+            className="h-12 w-auto object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

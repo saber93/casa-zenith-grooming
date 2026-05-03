@@ -189,9 +189,112 @@ export type Database = {
         };
         Relationships: [];
       };
+      queue_tickets: {
+        Row: {
+          actual_service_minutes: number | null;
+          barber_id: string | null;
+          called_at: string | null;
+          completed_at: string | null;
+          created_at: string | null;
+          customer_id: string | null;
+          customer_name: string;
+          customer_phone: string;
+          estimated_start_time: string | null;
+          estimated_wait_max: number | null;
+          estimated_wait_min: number | null;
+          id: string;
+          language: string | null;
+          mode: string;
+          notes: string | null;
+          prediction_confidence: string | null;
+          public_token: string;
+          queue_date: string;
+          queue_number: number;
+          service_id: string | null;
+          started_at: string | null;
+          status: string;
+          updated_at: string | null;
+        };
+        Insert: {
+          actual_service_minutes?: number | null;
+          barber_id?: string | null;
+          called_at?: string | null;
+          completed_at?: string | null;
+          created_at?: string | null;
+          customer_id?: string | null;
+          customer_name: string;
+          customer_phone: string;
+          estimated_start_time?: string | null;
+          estimated_wait_max?: number | null;
+          estimated_wait_min?: number | null;
+          id?: string;
+          language?: string | null;
+          mode?: string;
+          notes?: string | null;
+          prediction_confidence?: string | null;
+          public_token?: string;
+          queue_date?: string;
+          queue_number: number;
+          service_id?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string | null;
+        };
+        Update: {
+          actual_service_minutes?: number | null;
+          barber_id?: string | null;
+          called_at?: string | null;
+          completed_at?: string | null;
+          created_at?: string | null;
+          customer_id?: string | null;
+          customer_name?: string;
+          customer_phone?: string;
+          estimated_start_time?: string | null;
+          estimated_wait_max?: number | null;
+          estimated_wait_min?: number | null;
+          id?: string;
+          language?: string | null;
+          mode?: string;
+          notes?: string | null;
+          prediction_confidence?: string | null;
+          public_token?: string;
+          queue_date?: string;
+          queue_number?: number;
+          service_id?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "queue_tickets_barber_id_fkey";
+            columns: ["barber_id"];
+            isOneToOne: false;
+            referencedRelation: "barbers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "queue_tickets_customer_id_fkey";
+            columns: ["customer_id"];
+            isOneToOne: false;
+            referencedRelation: "customers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "queue_tickets_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       services: {
         Row: {
+          buffer_minutes: number | null;
           created_at: string | null;
+          default_duration_max: number | null;
+          default_duration_min: number | null;
           description_ar: string | null;
           description_en: string | null;
           duration_minutes: number;
@@ -207,7 +310,10 @@ export type Database = {
           title_en: string;
         };
         Insert: {
+          buffer_minutes?: number | null;
           created_at?: string | null;
+          default_duration_max?: number | null;
+          default_duration_min?: number | null;
           description_ar?: string | null;
           description_en?: string | null;
           duration_minutes?: number;
@@ -223,7 +329,10 @@ export type Database = {
           title_en: string;
         };
         Update: {
+          buffer_minutes?: number | null;
           created_at?: string | null;
+          default_duration_max?: number | null;
+          default_duration_min?: number | null;
           description_ar?: string | null;
           description_en?: string | null;
           duration_minutes?: number;
@@ -263,15 +372,99 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      barber_service_duration_stats: {
+        Row: {
+          avg_minutes: number | null;
+          barber_id: string | null;
+          p50_minutes: number | null;
+          p80_minutes: number | null;
+          p90_minutes: number | null;
+          sample_size: number | null;
+          service_id: string | null;
+        };
+        Relationships: [];
+      };
+      service_duration_history: {
+        Row: {
+          barber_id: string | null;
+          day_of_week: number | null;
+          duration_minutes: number | null;
+          hour_of_day: number | null;
+          service_id: string | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
+      admin_queue_action: {
+        Args: {
+          p_action: string;
+          p_barber_id?: string | null;
+          p_ticket_id: string;
+        };
+        Returns: Json;
+      };
+      get_queue_ticket_status: {
+        Args: {
+          p_public_token: string;
+        };
+        Returns: {
+          barber_display_name: string | null;
+          estimated_start_time: string | null;
+          estimated_wait_max: number | null;
+          estimated_wait_min: number | null;
+          position: number;
+          prediction_confidence: string;
+          queue_number: number;
+          service_display_name: string | null;
+          status: string;
+        }[];
+      };
+      get_unavailable_booking_slots: {
+        Args: {
+          p_barber_id: string;
+          p_booking_date: string;
+        };
+        Returns: {
+          booking_time: string;
+        }[];
+      };
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"];
           _user_id: string;
         };
         Returns: boolean;
+      };
+      join_queue: {
+        Args: {
+          p_barber_id?: string | null;
+          p_customer_name: string;
+          p_customer_phone: string;
+          p_language?: string;
+          p_mode?: string;
+          p_notes?: string | null;
+          p_service_id: string;
+        };
+        Returns: {
+          barber_display_name: string | null;
+          estimated_start_time: string | null;
+          estimated_wait_max: number | null;
+          estimated_wait_min: number | null;
+          position: number;
+          prediction_confidence: string;
+          public_token: string;
+          queue_number: number;
+          service_display_name: string | null;
+          status: string;
+        }[];
+      };
+      recalculate_queue_estimates: {
+        Args: {
+          p_barber_id: string;
+          p_queue_date: string;
+        };
+        Returns: Json;
       };
     };
     Enums: {

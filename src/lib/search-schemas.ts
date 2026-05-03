@@ -12,3 +12,9 @@ export const loginSearchSchema = z.object({
   redirect: z.string().optional(),
 });
 export const loginSearchValidator = zodValidator(loginSearchSchema);
+
+// /queue public ticket token.
+export const queueSearchSchema = z.object({
+  ticket: z.string().optional(),
+});
+export const queueSearchValidator = zodValidator(queueSearchSchema);
