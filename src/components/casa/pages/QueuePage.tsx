@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { waLink } from "@/lib/casa";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -107,6 +108,7 @@ function QueueJoinForm({
   barbers: Barber[];
 }) {
   const tt = t(lang);
+  const terminology = useBusinessTerminology(lang);
   const navigate = useNavigate();
   const [serviceId, setServiceId] = useState(services[0]?.id ?? "");
   const [mode, setMode] = useState<QueueMode>("any_barber");
@@ -147,9 +149,9 @@ function QueueJoinForm({
           p_customer_name: name,
           p_customer_phone: phone,
           p_mode: mode,
-          p_barber_id: selectedSpecificBarber,
+          p_barber_id: selectedSpecificBarber || undefined,
           p_language: lang,
-          p_notes: notes.trim() || null,
+          p_notes: notes.trim() || undefined,
         })
         .single();
 
@@ -213,15 +215,15 @@ function QueueJoinForm({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="any_barber">{tt.queue.anyBarber}</SelectItem>
-                  <SelectItem value="specific_barber">{tt.queue.specificBarber}</SelectItem>
+                  <SelectItem value="any_barber">{terminology.anyAvailableStaff}</SelectItem>
+                  <SelectItem value="specific_barber">{terminology.specificStaff}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {mode === "specific_barber" && (
               <div className="space-y-2 md:col-span-2">
-                <Label>{tt.queue.barber}</Label>
+                <Label>{terminology.staffSingular}</Label>
                 <Select value={barberId} onValueChange={setBarberId}>
                   <SelectTrigger>
                     <SelectValue />
@@ -292,13 +294,17 @@ function QueueJoinForm({
             <dl className="mt-6 space-y-3 border-t border-border/60 pt-5 text-sm">
               <div className="flex justify-between gap-4">
                 <dt className="text-muted-foreground">{tt.queue.mode}</dt>
-                <dd>{mode === "any_barber" ? tt.queue.anyBarber : tt.queue.specificBarber}</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt className="text-muted-foreground">{tt.queue.barber}</dt>
                 <dd>
                   {mode === "any_barber"
-                    ? tt.queue.anyBarber
+                    ? terminology.anyAvailableStaff
+                    : terminology.specificStaff}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">{terminology.staffSingular}</dt>
+                <dd>
+                  {mode === "any_barber"
+                    ? terminology.anyAvailableStaff
                     : selectedBarber
                       ? barberLabel(selectedBarber)
                       : "—"}
@@ -314,6 +320,7 @@ function QueueJoinForm({
 
 function QueueStatusScreen({ lang, ticket }: { lang: Lang; ticket: string }) {
   const tt = t(lang);
+  const terminology = useBusinessTerminology(lang);
   const [status, setStatus] = useState<QueueStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -386,7 +393,7 @@ function QueueStatusScreen({ lang, ticket }: { lang: Lang; ticket: string }) {
             `الاسم: ${sessionData.customerName}`,
             `رقم الدور: ${status.queue_number}`,
             `الخدمة: ${sessionData.serviceName || status.service_display_name || "—"}`,
-            `الحلاق: ${sessionData.barberName || status.barber_display_name || "—"}`,
+            `${terminology.serviceProvider}: ${sessionData.barberName || status.barber_display_name || "—"}`,
             `الانتظار المتوقع: ${wait} دقيقة`,
           ].join("\n")
         : [
@@ -402,7 +409,7 @@ function QueueStatusScreen({ lang, ticket }: { lang: Lang; ticket: string }) {
           `Name: ${sessionData.customerName}`,
           `Queue number: ${status.queue_number}`,
           `Service: ${sessionData.serviceName || status.service_display_name || "—"}`,
-          `Barber: ${sessionData.barberName || status.barber_display_name || "—"}`,
+          `${terminology.serviceProvider}: ${sessionData.barberName || status.barber_display_name || "—"}`,
           `Estimated wait: ${wait} minutes`,
         ].join("\n")
       : [
@@ -410,7 +417,7 @@ function QueueStatusScreen({ lang, ticket }: { lang: Lang; ticket: string }) {
           `Queue number: ${status.queue_number}`,
           `Status: ${queueStatusMessage(lang, status)}`,
         ].join("\n");
-  }, [lang, sessionData, status, tt.queue.whatsappGeneric]);
+  }, [lang, sessionData, status, terminology.serviceProvider, tt.queue.whatsappGeneric]);
 
   return (
     <Section lang={lang} eyebrow={tt.queue.title} title={tt.queue.statusTitle}>
@@ -439,7 +446,10 @@ function QueueStatusScreen({ lang, ticket }: { lang: Lang; ticket: string }) {
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <QueueFact label={tt.queue.service} value={status.service_display_name ?? "—"} />
-              <QueueFact label={tt.queue.barber} value={status.barber_display_name ?? "—"} />
+              <QueueFact
+                label={terminology.serviceProvider}
+                value={status.barber_display_name ?? "—"}
+              />
               <QueueFact label={tt.queue.position} value={String(status.position || "—")} />
               <QueueFact
                 label={tt.queue.estimatedWait}

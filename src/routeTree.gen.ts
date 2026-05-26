@@ -11,28 +11,58 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReservationRouteImport } from './routes/reservation'
 import { Route as QueueRouteImport } from './routes/queue'
+import { Route as PublicDirectoryRouteImport } from './routes/public-directory'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ArIndexRouteImport } from './routes/ar.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as BusinessSlugRouteImport } from './routes/business.$slug'
 import { Route as ArReservationRouteImport } from './routes/ar.reservation'
 import { Route as ArQueueRouteImport } from './routes/ar.queue'
+import { Route as ArPublicDirectoryRouteImport } from './routes/ar.public-directory'
 import { Route as ArProductsRouteImport } from './routes/ar.products'
 import { Route as ArLoginRouteImport } from './routes/ar.login'
 import { Route as ArAppRouteImport } from './routes/ar.app'
+import { Route as ArAdminRouteImport } from './routes/ar.admin'
+import { Route as AdminWalletsRouteImport } from './routes/admin.wallets'
+import { Route as AdminStaffRouteImport } from './routes/admin.staff'
+import { Route as AdminSchedulesRouteImport } from './routes/admin.schedules'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminReceptionRouteImport } from './routes/admin.reception'
 import { Route as AdminQueueDisplayRouteImport } from './routes/admin.queue-display'
 import { Route as AdminQueueAnalyticsRouteImport } from './routes/admin.queue-analytics'
 import { Route as AdminQueueRouteImport } from './routes/admin.queue'
+import { Route as AdminPromotionsRouteImport } from './routes/admin.promotions'
+import { Route as AdminProductSalesRouteImport } from './routes/admin.product-sales'
+import { Route as AdminPackagesRouteImport } from './routes/admin.packages'
+import { Route as AdminExpensesRouteImport } from './routes/admin.expenses'
+import { Route as AdminChangePasswordRouteImport } from './routes/admin.change-password'
+import { Route as AdminBusinessesRouteImport } from './routes/admin.businesses'
+import { Route as AdminBusinessSettingsRouteImport } from './routes/admin.business-settings'
 import { Route as AdminBookingsRouteImport } from './routes/admin.bookings'
 import { Route as AdminBarberWorkspaceRouteImport } from './routes/admin.barber-workspace'
 import { Route as ArServicesIndexRouteImport } from './routes/ar.services.index'
 import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
+import { Route as ArBusinessSlugRouteImport } from './routes/ar.business.$slug'
+import { Route as ArAdminWalletsRouteImport } from './routes/ar.admin.wallets'
+import { Route as ArAdminStaffRouteImport } from './routes/ar.admin.staff'
+import { Route as ArAdminSchedulesRouteImport } from './routes/ar.admin.schedules'
+import { Route as ArAdminReportsRouteImport } from './routes/ar.admin.reports'
+import { Route as ArAdminReceptionRouteImport } from './routes/ar.admin.reception'
 import { Route as ArAdminQueueDisplayRouteImport } from './routes/ar.admin.queue-display'
 import { Route as ArAdminQueueAnalyticsRouteImport } from './routes/ar.admin.queue-analytics'
 import { Route as ArAdminQueueRouteImport } from './routes/ar.admin.queue'
+import { Route as ArAdminPromotionsRouteImport } from './routes/ar.admin.promotions'
+import { Route as ArAdminProductSalesRouteImport } from './routes/ar.admin.product-sales'
+import { Route as ArAdminPackagesRouteImport } from './routes/ar.admin.packages'
+import { Route as ArAdminExpensesRouteImport } from './routes/ar.admin.expenses'
+import { Route as ArAdminChangePasswordRouteImport } from './routes/ar.admin.change-password'
+import { Route as ArAdminBusinessesRouteImport } from './routes/ar.admin.businesses'
+import { Route as ArAdminBusinessSettingsRouteImport } from './routes/ar.admin.business-settings'
 import { Route as ArAdminBookingsRouteImport } from './routes/ar.admin.bookings'
 import { Route as ArAdminBarberWorkspaceRouteImport } from './routes/ar.admin.barber-workspace'
 
@@ -44,6 +74,11 @@ const ReservationRoute = ReservationRouteImport.update({
 const QueueRoute = QueueRouteImport.update({
   id: '/queue',
   path: '/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicDirectoryRoute = PublicDirectoryRouteImport.update({
+  id: '/public-directory',
+  path: '/public-directory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -59,6 +94,11 @@ const LoginRoute = LoginRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -81,6 +121,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BusinessSlugRoute = BusinessSlugRouteImport.update({
+  id: '/business/$slug',
+  path: '/business/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArReservationRoute = ArReservationRouteImport.update({
   id: '/ar/reservation',
   path: '/ar/reservation',
@@ -89,6 +134,11 @@ const ArReservationRoute = ArReservationRouteImport.update({
 const ArQueueRoute = ArQueueRouteImport.update({
   id: '/ar/queue',
   path: '/ar/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArPublicDirectoryRoute = ArPublicDirectoryRouteImport.update({
+  id: '/ar/public-directory',
+  path: '/ar/public-directory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArProductsRoute = ArProductsRouteImport.update({
@@ -106,30 +156,95 @@ const ArAppRoute = ArAppRouteImport.update({
   path: '/ar/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminQueueDisplayRoute = AdminQueueDisplayRouteImport.update({
-  id: '/admin/queue-display',
-  path: '/admin/queue-display',
+const ArAdminRoute = ArAdminRouteImport.update({
+  id: '/ar/admin',
+  path: '/ar/admin',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminWalletsRoute = AdminWalletsRouteImport.update({
+  id: '/wallets',
+  path: '/wallets',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSchedulesRoute = AdminSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReceptionRoute = AdminReceptionRouteImport.update({
+  id: '/reception',
+  path: '/reception',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQueueDisplayRoute = AdminQueueDisplayRouteImport.update({
+  id: '/queue-display',
+  path: '/queue-display',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminQueueAnalyticsRoute = AdminQueueAnalyticsRouteImport.update({
-  id: '/admin/queue-analytics',
-  path: '/admin/queue-analytics',
-  getParentRoute: () => rootRouteImport,
+  id: '/queue-analytics',
+  path: '/queue-analytics',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminQueueRoute = AdminQueueRouteImport.update({
-  id: '/admin/queue',
-  path: '/admin/queue',
-  getParentRoute: () => rootRouteImport,
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPromotionsRoute = AdminPromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductSalesRoute = AdminProductSalesRouteImport.update({
+  id: '/product-sales',
+  path: '/product-sales',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPackagesRoute = AdminPackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExpensesRoute = AdminExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminChangePasswordRoute = AdminChangePasswordRouteImport.update({
+  id: '/change-password',
+  path: '/change-password',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBusinessesRoute = AdminBusinessesRouteImport.update({
+  id: '/businesses',
+  path: '/businesses',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBusinessSettingsRoute = AdminBusinessSettingsRouteImport.update({
+  id: '/business-settings',
+  path: '/business-settings',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminBookingsRoute = AdminBookingsRouteImport.update({
-  id: '/admin/bookings',
-  path: '/admin/bookings',
-  getParentRoute: () => rootRouteImport,
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminBarberWorkspaceRoute = AdminBarberWorkspaceRouteImport.update({
-  id: '/admin/barber-workspace',
-  path: '/admin/barber-workspace',
-  getParentRoute: () => rootRouteImport,
+  id: '/barber-workspace',
+  path: '/barber-workspace',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ArServicesIndexRoute = ArServicesIndexRouteImport.update({
   id: '/ar/services/',
@@ -141,114 +256,269 @@ const ArServicesSlugRoute = ArServicesSlugRouteImport.update({
   path: '/ar/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArAdminQueueDisplayRoute = ArAdminQueueDisplayRouteImport.update({
-  id: '/ar/admin/queue-display',
-  path: '/ar/admin/queue-display',
+const ArBusinessSlugRoute = ArBusinessSlugRouteImport.update({
+  id: '/ar/business/$slug',
+  path: '/ar/business/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ArAdminWalletsRoute = ArAdminWalletsRouteImport.update({
+  id: '/wallets',
+  path: '/wallets',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminStaffRoute = ArAdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminSchedulesRoute = ArAdminSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminReportsRoute = ArAdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminReceptionRoute = ArAdminReceptionRouteImport.update({
+  id: '/reception',
+  path: '/reception',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminQueueDisplayRoute = ArAdminQueueDisplayRouteImport.update({
+  id: '/queue-display',
+  path: '/queue-display',
+  getParentRoute: () => ArAdminRoute,
 } as any)
 const ArAdminQueueAnalyticsRoute = ArAdminQueueAnalyticsRouteImport.update({
-  id: '/ar/admin/queue-analytics',
-  path: '/ar/admin/queue-analytics',
-  getParentRoute: () => rootRouteImport,
+  id: '/queue-analytics',
+  path: '/queue-analytics',
+  getParentRoute: () => ArAdminRoute,
 } as any)
 const ArAdminQueueRoute = ArAdminQueueRouteImport.update({
-  id: '/ar/admin/queue',
-  path: '/ar/admin/queue',
-  getParentRoute: () => rootRouteImport,
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminPromotionsRoute = ArAdminPromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminProductSalesRoute = ArAdminProductSalesRouteImport.update({
+  id: '/product-sales',
+  path: '/product-sales',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminPackagesRoute = ArAdminPackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminExpensesRoute = ArAdminExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminChangePasswordRoute = ArAdminChangePasswordRouteImport.update({
+  id: '/change-password',
+  path: '/change-password',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminBusinessesRoute = ArAdminBusinessesRouteImport.update({
+  id: '/businesses',
+  path: '/businesses',
+  getParentRoute: () => ArAdminRoute,
+} as any)
+const ArAdminBusinessSettingsRoute = ArAdminBusinessSettingsRouteImport.update({
+  id: '/business-settings',
+  path: '/business-settings',
+  getParentRoute: () => ArAdminRoute,
 } as any)
 const ArAdminBookingsRoute = ArAdminBookingsRouteImport.update({
-  id: '/ar/admin/bookings',
-  path: '/ar/admin/bookings',
-  getParentRoute: () => rootRouteImport,
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => ArAdminRoute,
 } as any)
 const ArAdminBarberWorkspaceRoute = ArAdminBarberWorkspaceRouteImport.update({
-  id: '/ar/admin/barber-workspace',
-  path: '/ar/admin/barber-workspace',
-  getParentRoute: () => rootRouteImport,
+  id: '/barber-workspace',
+  path: '/barber-workspace',
+  getParentRoute: () => ArAdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/public-directory': typeof PublicDirectoryRoute
   '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
   '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/business-settings': typeof AdminBusinessSettingsRoute
+  '/admin/businesses': typeof AdminBusinessesRoute
+  '/admin/change-password': typeof AdminChangePasswordRoute
+  '/admin/expenses': typeof AdminExpensesRoute
+  '/admin/packages': typeof AdminPackagesRoute
+  '/admin/product-sales': typeof AdminProductSalesRoute
+  '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/queue': typeof AdminQueueRoute
   '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
   '/admin/queue-display': typeof AdminQueueDisplayRoute
+  '/admin/reception': typeof AdminReceptionRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/schedules': typeof AdminSchedulesRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/wallets': typeof AdminWalletsRoute
+  '/ar/admin': typeof ArAdminRouteWithChildren
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/public-directory': typeof ArPublicDirectoryRoute
   '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
+  '/business/$slug': typeof BusinessSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/business-settings': typeof ArAdminBusinessSettingsRoute
+  '/ar/admin/businesses': typeof ArAdminBusinessesRoute
+  '/ar/admin/change-password': typeof ArAdminChangePasswordRoute
+  '/ar/admin/expenses': typeof ArAdminExpensesRoute
+  '/ar/admin/packages': typeof ArAdminPackagesRoute
+  '/ar/admin/product-sales': typeof ArAdminProductSalesRoute
+  '/ar/admin/promotions': typeof ArAdminPromotionsRoute
   '/ar/admin/queue': typeof ArAdminQueueRoute
   '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
   '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
+  '/ar/admin/reception': typeof ArAdminReceptionRoute
+  '/ar/admin/reports': typeof ArAdminReportsRoute
+  '/ar/admin/schedules': typeof ArAdminSchedulesRoute
+  '/ar/admin/staff': typeof ArAdminStaffRoute
+  '/ar/admin/wallets': typeof ArAdminWalletsRoute
+  '/ar/business/$slug': typeof ArBusinessSlugRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/public-directory': typeof PublicDirectoryRoute
   '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
   '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/business-settings': typeof AdminBusinessSettingsRoute
+  '/admin/businesses': typeof AdminBusinessesRoute
+  '/admin/change-password': typeof AdminChangePasswordRoute
+  '/admin/expenses': typeof AdminExpensesRoute
+  '/admin/packages': typeof AdminPackagesRoute
+  '/admin/product-sales': typeof AdminProductSalesRoute
+  '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/queue': typeof AdminQueueRoute
   '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
   '/admin/queue-display': typeof AdminQueueDisplayRoute
+  '/admin/reception': typeof AdminReceptionRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/schedules': typeof AdminSchedulesRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/wallets': typeof AdminWalletsRoute
+  '/ar/admin': typeof ArAdminRouteWithChildren
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/public-directory': typeof ArPublicDirectoryRoute
   '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
+  '/business/$slug': typeof BusinessSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar': typeof ArIndexRoute
   '/services': typeof ServicesIndexRoute
   '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/business-settings': typeof ArAdminBusinessSettingsRoute
+  '/ar/admin/businesses': typeof ArAdminBusinessesRoute
+  '/ar/admin/change-password': typeof ArAdminChangePasswordRoute
+  '/ar/admin/expenses': typeof ArAdminExpensesRoute
+  '/ar/admin/packages': typeof ArAdminPackagesRoute
+  '/ar/admin/product-sales': typeof ArAdminProductSalesRoute
+  '/ar/admin/promotions': typeof ArAdminPromotionsRoute
   '/ar/admin/queue': typeof ArAdminQueueRoute
   '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
   '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
+  '/ar/admin/reception': typeof ArAdminReceptionRoute
+  '/ar/admin/reports': typeof ArAdminReportsRoute
+  '/ar/admin/schedules': typeof ArAdminSchedulesRoute
+  '/ar/admin/staff': typeof ArAdminStaffRoute
+  '/ar/admin/wallets': typeof ArAdminWalletsRoute
+  '/ar/business/$slug': typeof ArBusinessSlugRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services': typeof ArServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/public-directory': typeof PublicDirectoryRoute
   '/queue': typeof QueueRoute
   '/reservation': typeof ReservationRoute
   '/admin/barber-workspace': typeof AdminBarberWorkspaceRoute
   '/admin/bookings': typeof AdminBookingsRoute
+  '/admin/business-settings': typeof AdminBusinessSettingsRoute
+  '/admin/businesses': typeof AdminBusinessesRoute
+  '/admin/change-password': typeof AdminChangePasswordRoute
+  '/admin/expenses': typeof AdminExpensesRoute
+  '/admin/packages': typeof AdminPackagesRoute
+  '/admin/product-sales': typeof AdminProductSalesRoute
+  '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/queue': typeof AdminQueueRoute
   '/admin/queue-analytics': typeof AdminQueueAnalyticsRoute
   '/admin/queue-display': typeof AdminQueueDisplayRoute
+  '/admin/reception': typeof AdminReceptionRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/schedules': typeof AdminSchedulesRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/wallets': typeof AdminWalletsRoute
+  '/ar/admin': typeof ArAdminRouteWithChildren
   '/ar/app': typeof ArAppRoute
   '/ar/login': typeof ArLoginRoute
   '/ar/products': typeof ArProductsRoute
+  '/ar/public-directory': typeof ArPublicDirectoryRoute
   '/ar/queue': typeof ArQueueRoute
   '/ar/reservation': typeof ArReservationRoute
+  '/business/$slug': typeof BusinessSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ar/': typeof ArIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/ar/admin/barber-workspace': typeof ArAdminBarberWorkspaceRoute
   '/ar/admin/bookings': typeof ArAdminBookingsRoute
+  '/ar/admin/business-settings': typeof ArAdminBusinessSettingsRoute
+  '/ar/admin/businesses': typeof ArAdminBusinessesRoute
+  '/ar/admin/change-password': typeof ArAdminChangePasswordRoute
+  '/ar/admin/expenses': typeof ArAdminExpensesRoute
+  '/ar/admin/packages': typeof ArAdminPackagesRoute
+  '/ar/admin/product-sales': typeof ArAdminProductSalesRoute
+  '/ar/admin/promotions': typeof ArAdminPromotionsRoute
   '/ar/admin/queue': typeof ArAdminQueueRoute
   '/ar/admin/queue-analytics': typeof ArAdminQueueAnalyticsRoute
   '/ar/admin/queue-display': typeof ArAdminQueueDisplayRoute
+  '/ar/admin/reception': typeof ArAdminReceptionRoute
+  '/ar/admin/reports': typeof ArAdminReportsRoute
+  '/ar/admin/schedules': typeof ArAdminSchedulesRoute
+  '/ar/admin/staff': typeof ArAdminStaffRoute
+  '/ar/admin/wallets': typeof ArAdminWalletsRoute
+  '/ar/business/$slug': typeof ArBusinessSlugRoute
   '/ar/services/$slug': typeof ArServicesSlugRoute
   '/ar/services/': typeof ArServicesIndexRoute
 }
@@ -256,114 +526,200 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app'
     | '/login'
     | '/products'
+    | '/public-directory'
     | '/queue'
     | '/reservation'
     | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/business-settings'
+    | '/admin/businesses'
+    | '/admin/change-password'
+    | '/admin/expenses'
+    | '/admin/packages'
+    | '/admin/product-sales'
+    | '/admin/promotions'
     | '/admin/queue'
     | '/admin/queue-analytics'
     | '/admin/queue-display'
+    | '/admin/reception'
+    | '/admin/reports'
+    | '/admin/schedules'
+    | '/admin/staff'
+    | '/admin/wallets'
+    | '/ar/admin'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/public-directory'
     | '/ar/queue'
     | '/ar/reservation'
+    | '/business/$slug'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
     | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/business-settings'
+    | '/ar/admin/businesses'
+    | '/ar/admin/change-password'
+    | '/ar/admin/expenses'
+    | '/ar/admin/packages'
+    | '/ar/admin/product-sales'
+    | '/ar/admin/promotions'
     | '/ar/admin/queue'
     | '/ar/admin/queue-analytics'
     | '/ar/admin/queue-display'
+    | '/ar/admin/reception'
+    | '/ar/admin/reports'
+    | '/ar/admin/schedules'
+    | '/ar/admin/staff'
+    | '/ar/admin/wallets'
+    | '/ar/business/$slug'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/app'
     | '/login'
     | '/products'
+    | '/public-directory'
     | '/queue'
     | '/reservation'
     | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/business-settings'
+    | '/admin/businesses'
+    | '/admin/change-password'
+    | '/admin/expenses'
+    | '/admin/packages'
+    | '/admin/product-sales'
+    | '/admin/promotions'
     | '/admin/queue'
     | '/admin/queue-analytics'
     | '/admin/queue-display'
+    | '/admin/reception'
+    | '/admin/reports'
+    | '/admin/schedules'
+    | '/admin/staff'
+    | '/admin/wallets'
+    | '/ar/admin'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/public-directory'
     | '/ar/queue'
     | '/ar/reservation'
+    | '/business/$slug'
     | '/services/$slug'
     | '/ar'
     | '/services'
     | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/business-settings'
+    | '/ar/admin/businesses'
+    | '/ar/admin/change-password'
+    | '/ar/admin/expenses'
+    | '/ar/admin/packages'
+    | '/ar/admin/product-sales'
+    | '/ar/admin/promotions'
     | '/ar/admin/queue'
     | '/ar/admin/queue-analytics'
     | '/ar/admin/queue-display'
+    | '/ar/admin/reception'
+    | '/ar/admin/reports'
+    | '/ar/admin/schedules'
+    | '/ar/admin/staff'
+    | '/ar/admin/wallets'
+    | '/ar/business/$slug'
     | '/ar/services/$slug'
     | '/ar/services'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app'
     | '/login'
     | '/products'
+    | '/public-directory'
     | '/queue'
     | '/reservation'
     | '/admin/barber-workspace'
     | '/admin/bookings'
+    | '/admin/business-settings'
+    | '/admin/businesses'
+    | '/admin/change-password'
+    | '/admin/expenses'
+    | '/admin/packages'
+    | '/admin/product-sales'
+    | '/admin/promotions'
     | '/admin/queue'
     | '/admin/queue-analytics'
     | '/admin/queue-display'
+    | '/admin/reception'
+    | '/admin/reports'
+    | '/admin/schedules'
+    | '/admin/staff'
+    | '/admin/wallets'
+    | '/ar/admin'
     | '/ar/app'
     | '/ar/login'
     | '/ar/products'
+    | '/ar/public-directory'
     | '/ar/queue'
     | '/ar/reservation'
+    | '/business/$slug'
     | '/services/$slug'
     | '/ar/'
     | '/services/'
     | '/ar/admin/barber-workspace'
     | '/ar/admin/bookings'
+    | '/ar/admin/business-settings'
+    | '/ar/admin/businesses'
+    | '/ar/admin/change-password'
+    | '/ar/admin/expenses'
+    | '/ar/admin/packages'
+    | '/ar/admin/product-sales'
+    | '/ar/admin/promotions'
     | '/ar/admin/queue'
     | '/ar/admin/queue-analytics'
     | '/ar/admin/queue-display'
+    | '/ar/admin/reception'
+    | '/ar/admin/reports'
+    | '/ar/admin/schedules'
+    | '/ar/admin/staff'
+    | '/ar/admin/wallets'
+    | '/ar/business/$slug'
     | '/ar/services/$slug'
     | '/ar/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRoute
   LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
+  PublicDirectoryRoute: typeof PublicDirectoryRoute
   QueueRoute: typeof QueueRoute
   ReservationRoute: typeof ReservationRoute
-  AdminBarberWorkspaceRoute: typeof AdminBarberWorkspaceRoute
-  AdminBookingsRoute: typeof AdminBookingsRoute
-  AdminQueueRoute: typeof AdminQueueRoute
-  AdminQueueAnalyticsRoute: typeof AdminQueueAnalyticsRoute
-  AdminQueueDisplayRoute: typeof AdminQueueDisplayRoute
+  ArAdminRoute: typeof ArAdminRouteWithChildren
   ArAppRoute: typeof ArAppRoute
   ArLoginRoute: typeof ArLoginRoute
   ArProductsRoute: typeof ArProductsRoute
+  ArPublicDirectoryRoute: typeof ArPublicDirectoryRoute
   ArQueueRoute: typeof ArQueueRoute
   ArReservationRoute: typeof ArReservationRoute
+  BusinessSlugRoute: typeof BusinessSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   ArIndexRoute: typeof ArIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
-  ArAdminBarberWorkspaceRoute: typeof ArAdminBarberWorkspaceRoute
-  ArAdminBookingsRoute: typeof ArAdminBookingsRoute
-  ArAdminQueueRoute: typeof ArAdminQueueRoute
-  ArAdminQueueAnalyticsRoute: typeof ArAdminQueueAnalyticsRoute
-  ArAdminQueueDisplayRoute: typeof ArAdminQueueDisplayRoute
+  ArBusinessSlugRoute: typeof ArBusinessSlugRoute
   ArServicesSlugRoute: typeof ArServicesSlugRoute
   ArServicesIndexRoute: typeof ArServicesIndexRoute
 }
@@ -382,6 +738,13 @@ declare module '@tanstack/react-router' {
       path: '/queue'
       fullPath: '/queue'
       preLoaderRoute: typeof QueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/public-directory': {
+      id: '/public-directory'
+      path: '/public-directory'
+      fullPath: '/public-directory'
+      preLoaderRoute: typeof PublicDirectoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -403,6 +766,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -433,6 +803,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/business/$slug': {
+      id: '/business/$slug'
+      path: '/business/$slug'
+      fullPath: '/business/$slug'
+      preLoaderRoute: typeof BusinessSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ar/reservation': {
       id: '/ar/reservation'
       path: '/ar/reservation'
@@ -445,6 +822,13 @@ declare module '@tanstack/react-router' {
       path: '/ar/queue'
       fullPath: '/ar/queue'
       preLoaderRoute: typeof ArQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/public-directory': {
+      id: '/ar/public-directory'
+      path: '/ar/public-directory'
+      fullPath: '/ar/public-directory'
+      preLoaderRoute: typeof ArPublicDirectoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ar/products': {
@@ -468,40 +852,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArAppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/admin': {
+      id: '/ar/admin'
+      path: '/ar/admin'
+      fullPath: '/ar/admin'
+      preLoaderRoute: typeof ArAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/wallets': {
+      id: '/admin/wallets'
+      path: '/wallets'
+      fullPath: '/admin/wallets'
+      preLoaderRoute: typeof AdminWalletsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/schedules': {
+      id: '/admin/schedules'
+      path: '/schedules'
+      fullPath: '/admin/schedules'
+      preLoaderRoute: typeof AdminSchedulesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reception': {
+      id: '/admin/reception'
+      path: '/reception'
+      fullPath: '/admin/reception'
+      preLoaderRoute: typeof AdminReceptionRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/queue-display': {
       id: '/admin/queue-display'
-      path: '/admin/queue-display'
+      path: '/queue-display'
       fullPath: '/admin/queue-display'
       preLoaderRoute: typeof AdminQueueDisplayRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/queue-analytics': {
       id: '/admin/queue-analytics'
-      path: '/admin/queue-analytics'
+      path: '/queue-analytics'
       fullPath: '/admin/queue-analytics'
       preLoaderRoute: typeof AdminQueueAnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/queue': {
       id: '/admin/queue'
-      path: '/admin/queue'
+      path: '/queue'
       fullPath: '/admin/queue'
       preLoaderRoute: typeof AdminQueueRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/promotions': {
+      id: '/admin/promotions'
+      path: '/promotions'
+      fullPath: '/admin/promotions'
+      preLoaderRoute: typeof AdminPromotionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/product-sales': {
+      id: '/admin/product-sales'
+      path: '/product-sales'
+      fullPath: '/admin/product-sales'
+      preLoaderRoute: typeof AdminProductSalesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/packages': {
+      id: '/admin/packages'
+      path: '/packages'
+      fullPath: '/admin/packages'
+      preLoaderRoute: typeof AdminPackagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/expenses': {
+      id: '/admin/expenses'
+      path: '/expenses'
+      fullPath: '/admin/expenses'
+      preLoaderRoute: typeof AdminExpensesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/change-password': {
+      id: '/admin/change-password'
+      path: '/change-password'
+      fullPath: '/admin/change-password'
+      preLoaderRoute: typeof AdminChangePasswordRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/businesses': {
+      id: '/admin/businesses'
+      path: '/businesses'
+      fullPath: '/admin/businesses'
+      preLoaderRoute: typeof AdminBusinessesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/business-settings': {
+      id: '/admin/business-settings'
+      path: '/business-settings'
+      fullPath: '/admin/business-settings'
+      preLoaderRoute: typeof AdminBusinessSettingsRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/bookings': {
       id: '/admin/bookings'
-      path: '/admin/bookings'
+      path: '/bookings'
       fullPath: '/admin/bookings'
       preLoaderRoute: typeof AdminBookingsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/barber-workspace': {
       id: '/admin/barber-workspace'
-      path: '/admin/barber-workspace'
+      path: '/barber-workspace'
       fullPath: '/admin/barber-workspace'
       preLoaderRoute: typeof AdminBarberWorkspaceRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/ar/services/': {
       id: '/ar/services/'
@@ -517,69 +992,241 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/business/$slug': {
+      id: '/ar/business/$slug'
+      path: '/ar/business/$slug'
+      fullPath: '/ar/business/$slug'
+      preLoaderRoute: typeof ArBusinessSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/admin/wallets': {
+      id: '/ar/admin/wallets'
+      path: '/wallets'
+      fullPath: '/ar/admin/wallets'
+      preLoaderRoute: typeof ArAdminWalletsRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/staff': {
+      id: '/ar/admin/staff'
+      path: '/staff'
+      fullPath: '/ar/admin/staff'
+      preLoaderRoute: typeof ArAdminStaffRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/schedules': {
+      id: '/ar/admin/schedules'
+      path: '/schedules'
+      fullPath: '/ar/admin/schedules'
+      preLoaderRoute: typeof ArAdminSchedulesRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/reports': {
+      id: '/ar/admin/reports'
+      path: '/reports'
+      fullPath: '/ar/admin/reports'
+      preLoaderRoute: typeof ArAdminReportsRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/reception': {
+      id: '/ar/admin/reception'
+      path: '/reception'
+      fullPath: '/ar/admin/reception'
+      preLoaderRoute: typeof ArAdminReceptionRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
     '/ar/admin/queue-display': {
       id: '/ar/admin/queue-display'
-      path: '/ar/admin/queue-display'
+      path: '/queue-display'
       fullPath: '/ar/admin/queue-display'
       preLoaderRoute: typeof ArAdminQueueDisplayRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ArAdminRoute
     }
     '/ar/admin/queue-analytics': {
       id: '/ar/admin/queue-analytics'
-      path: '/ar/admin/queue-analytics'
+      path: '/queue-analytics'
       fullPath: '/ar/admin/queue-analytics'
       preLoaderRoute: typeof ArAdminQueueAnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ArAdminRoute
     }
     '/ar/admin/queue': {
       id: '/ar/admin/queue'
-      path: '/ar/admin/queue'
+      path: '/queue'
       fullPath: '/ar/admin/queue'
       preLoaderRoute: typeof ArAdminQueueRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/promotions': {
+      id: '/ar/admin/promotions'
+      path: '/promotions'
+      fullPath: '/ar/admin/promotions'
+      preLoaderRoute: typeof ArAdminPromotionsRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/product-sales': {
+      id: '/ar/admin/product-sales'
+      path: '/product-sales'
+      fullPath: '/ar/admin/product-sales'
+      preLoaderRoute: typeof ArAdminProductSalesRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/packages': {
+      id: '/ar/admin/packages'
+      path: '/packages'
+      fullPath: '/ar/admin/packages'
+      preLoaderRoute: typeof ArAdminPackagesRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/expenses': {
+      id: '/ar/admin/expenses'
+      path: '/expenses'
+      fullPath: '/ar/admin/expenses'
+      preLoaderRoute: typeof ArAdminExpensesRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/change-password': {
+      id: '/ar/admin/change-password'
+      path: '/change-password'
+      fullPath: '/ar/admin/change-password'
+      preLoaderRoute: typeof ArAdminChangePasswordRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/businesses': {
+      id: '/ar/admin/businesses'
+      path: '/businesses'
+      fullPath: '/ar/admin/businesses'
+      preLoaderRoute: typeof ArAdminBusinessesRouteImport
+      parentRoute: typeof ArAdminRoute
+    }
+    '/ar/admin/business-settings': {
+      id: '/ar/admin/business-settings'
+      path: '/business-settings'
+      fullPath: '/ar/admin/business-settings'
+      preLoaderRoute: typeof ArAdminBusinessSettingsRouteImport
+      parentRoute: typeof ArAdminRoute
     }
     '/ar/admin/bookings': {
       id: '/ar/admin/bookings'
-      path: '/ar/admin/bookings'
+      path: '/bookings'
       fullPath: '/ar/admin/bookings'
       preLoaderRoute: typeof ArAdminBookingsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ArAdminRoute
     }
     '/ar/admin/barber-workspace': {
       id: '/ar/admin/barber-workspace'
-      path: '/ar/admin/barber-workspace'
+      path: '/barber-workspace'
       fullPath: '/ar/admin/barber-workspace'
       preLoaderRoute: typeof ArAdminBarberWorkspaceRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ArAdminRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
-  LoginRoute: LoginRoute,
-  ProductsRoute: ProductsRoute,
-  QueueRoute: QueueRoute,
-  ReservationRoute: ReservationRoute,
+interface AdminRouteChildren {
+  AdminBarberWorkspaceRoute: typeof AdminBarberWorkspaceRoute
+  AdminBookingsRoute: typeof AdminBookingsRoute
+  AdminBusinessSettingsRoute: typeof AdminBusinessSettingsRoute
+  AdminBusinessesRoute: typeof AdminBusinessesRoute
+  AdminChangePasswordRoute: typeof AdminChangePasswordRoute
+  AdminExpensesRoute: typeof AdminExpensesRoute
+  AdminPackagesRoute: typeof AdminPackagesRoute
+  AdminProductSalesRoute: typeof AdminProductSalesRoute
+  AdminPromotionsRoute: typeof AdminPromotionsRoute
+  AdminQueueRoute: typeof AdminQueueRoute
+  AdminQueueAnalyticsRoute: typeof AdminQueueAnalyticsRoute
+  AdminQueueDisplayRoute: typeof AdminQueueDisplayRoute
+  AdminReceptionRoute: typeof AdminReceptionRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminSchedulesRoute: typeof AdminSchedulesRoute
+  AdminStaffRoute: typeof AdminStaffRoute
+  AdminWalletsRoute: typeof AdminWalletsRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
   AdminBarberWorkspaceRoute: AdminBarberWorkspaceRoute,
   AdminBookingsRoute: AdminBookingsRoute,
+  AdminBusinessSettingsRoute: AdminBusinessSettingsRoute,
+  AdminBusinessesRoute: AdminBusinessesRoute,
+  AdminChangePasswordRoute: AdminChangePasswordRoute,
+  AdminExpensesRoute: AdminExpensesRoute,
+  AdminPackagesRoute: AdminPackagesRoute,
+  AdminProductSalesRoute: AdminProductSalesRoute,
+  AdminPromotionsRoute: AdminPromotionsRoute,
   AdminQueueRoute: AdminQueueRoute,
   AdminQueueAnalyticsRoute: AdminQueueAnalyticsRoute,
   AdminQueueDisplayRoute: AdminQueueDisplayRoute,
-  ArAppRoute: ArAppRoute,
-  ArLoginRoute: ArLoginRoute,
-  ArProductsRoute: ArProductsRoute,
-  ArQueueRoute: ArQueueRoute,
-  ArReservationRoute: ArReservationRoute,
-  ServicesSlugRoute: ServicesSlugRoute,
-  ArIndexRoute: ArIndexRoute,
-  ServicesIndexRoute: ServicesIndexRoute,
+  AdminReceptionRoute: AdminReceptionRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminSchedulesRoute: AdminSchedulesRoute,
+  AdminStaffRoute: AdminStaffRoute,
+  AdminWalletsRoute: AdminWalletsRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface ArAdminRouteChildren {
+  ArAdminBarberWorkspaceRoute: typeof ArAdminBarberWorkspaceRoute
+  ArAdminBookingsRoute: typeof ArAdminBookingsRoute
+  ArAdminBusinessSettingsRoute: typeof ArAdminBusinessSettingsRoute
+  ArAdminBusinessesRoute: typeof ArAdminBusinessesRoute
+  ArAdminChangePasswordRoute: typeof ArAdminChangePasswordRoute
+  ArAdminExpensesRoute: typeof ArAdminExpensesRoute
+  ArAdminPackagesRoute: typeof ArAdminPackagesRoute
+  ArAdminProductSalesRoute: typeof ArAdminProductSalesRoute
+  ArAdminPromotionsRoute: typeof ArAdminPromotionsRoute
+  ArAdminQueueRoute: typeof ArAdminQueueRoute
+  ArAdminQueueAnalyticsRoute: typeof ArAdminQueueAnalyticsRoute
+  ArAdminQueueDisplayRoute: typeof ArAdminQueueDisplayRoute
+  ArAdminReceptionRoute: typeof ArAdminReceptionRoute
+  ArAdminReportsRoute: typeof ArAdminReportsRoute
+  ArAdminSchedulesRoute: typeof ArAdminSchedulesRoute
+  ArAdminStaffRoute: typeof ArAdminStaffRoute
+  ArAdminWalletsRoute: typeof ArAdminWalletsRoute
+}
+
+const ArAdminRouteChildren: ArAdminRouteChildren = {
   ArAdminBarberWorkspaceRoute: ArAdminBarberWorkspaceRoute,
   ArAdminBookingsRoute: ArAdminBookingsRoute,
+  ArAdminBusinessSettingsRoute: ArAdminBusinessSettingsRoute,
+  ArAdminBusinessesRoute: ArAdminBusinessesRoute,
+  ArAdminChangePasswordRoute: ArAdminChangePasswordRoute,
+  ArAdminExpensesRoute: ArAdminExpensesRoute,
+  ArAdminPackagesRoute: ArAdminPackagesRoute,
+  ArAdminProductSalesRoute: ArAdminProductSalesRoute,
+  ArAdminPromotionsRoute: ArAdminPromotionsRoute,
   ArAdminQueueRoute: ArAdminQueueRoute,
   ArAdminQueueAnalyticsRoute: ArAdminQueueAnalyticsRoute,
   ArAdminQueueDisplayRoute: ArAdminQueueDisplayRoute,
+  ArAdminReceptionRoute: ArAdminReceptionRoute,
+  ArAdminReportsRoute: ArAdminReportsRoute,
+  ArAdminSchedulesRoute: ArAdminSchedulesRoute,
+  ArAdminStaffRoute: ArAdminStaffRoute,
+  ArAdminWalletsRoute: ArAdminWalletsRoute,
+}
+
+const ArAdminRouteWithChildren =
+  ArAdminRoute._addFileChildren(ArAdminRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AppRoute: AppRoute,
+  LoginRoute: LoginRoute,
+  ProductsRoute: ProductsRoute,
+  PublicDirectoryRoute: PublicDirectoryRoute,
+  QueueRoute: QueueRoute,
+  ReservationRoute: ReservationRoute,
+  ArAdminRoute: ArAdminRouteWithChildren,
+  ArAppRoute: ArAppRoute,
+  ArLoginRoute: ArLoginRoute,
+  ArProductsRoute: ArProductsRoute,
+  ArPublicDirectoryRoute: ArPublicDirectoryRoute,
+  ArQueueRoute: ArQueueRoute,
+  ArReservationRoute: ArReservationRoute,
+  BusinessSlugRoute: BusinessSlugRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  ArIndexRoute: ArIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+  ArBusinessSlugRoute: ArBusinessSlugRoute,
   ArServicesSlugRoute: ArServicesSlugRoute,
   ArServicesIndexRoute: ArServicesIndexRoute,
 }

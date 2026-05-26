@@ -3,6 +3,7 @@ import { ReservationPage } from "@/components/casa/pages/ReservationPage";
 import { listBarbers, listServices } from "@/server/casa.functions";
 import { buildPageHead, pageSeoCopy } from "@/lib/seo";
 import { reservationSearchValidator } from "@/lib/search-schemas";
+import { RequireModule } from "@/lib/business-context";
 
 export const Route = createFileRoute("/ar/reservation")({
   validateSearch: reservationSearchValidator,
@@ -20,5 +21,9 @@ export const Route = createFileRoute("/ar/reservation")({
 function ArReservationRouteComponent() {
   const { services, barbers } = Route.useLoaderData();
   const { service } = Route.useSearch();
-  return <ReservationPage lang="ar" services={services} barbers={barbers} presetSlug={service} />;
+  return (
+    <RequireModule module="reservations" lang="ar">
+      <ReservationPage lang="ar" services={services} barbers={barbers} presetSlug={service} />
+    </RequireModule>
+  );
 }

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ProductsPage } from "@/components/casa/pages/ProductsPage";
 import { listProducts } from "@/server/casa.functions";
 import { buildPageHead, pageSeoCopy } from "@/lib/seo";
+import { RequireModule } from "@/lib/business-context";
 
 export const Route = createFileRoute("/ar/products")({
   loader: () => listProducts(),
@@ -13,5 +14,9 @@ export const Route = createFileRoute("/ar/products")({
 });
 
 function ArProductsRouteComponent() {
-  return <ProductsPage lang="ar" products={Route.useLoaderData()} />;
+  return (
+    <RequireModule module="products_catalog" lang="ar">
+      <ProductsPage lang="ar" products={Route.useLoaderData()} />
+    </RequireModule>
+  );
 }

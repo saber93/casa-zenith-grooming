@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { AdminQueueDisplayPage } from "@/components/casa/pages/AdminQueueDisplayPage";
+import { RequireModule } from "@/lib/business-context";
 import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/queue-display")({
@@ -11,5 +12,9 @@ export const Route = createFileRoute("/admin/queue-display")({
       title: "Queue Display — Casa Gents Salon",
       description: "A safe waiting-area queue display for Casa walk-in guests.",
     }),
-  component: () => <AdminQueueDisplayPage lang="en" />,
+  component: () => (
+    <RequireModule module="queue_display" lang="en">
+      <AdminQueueDisplayPage lang="en" />
+    </RequireModule>
+  ),
 });

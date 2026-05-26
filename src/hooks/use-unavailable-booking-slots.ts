@@ -8,6 +8,10 @@ type BookingSlotChangedPayload = {
   };
 };
 
+type UnavailableBookingSlot = {
+  booking_time: string;
+};
+
 export function useUnavailableBookingSlots(barberId: string | null | undefined, date: string) {
   const [unavailableSlots, setUnavailableSlots] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -33,7 +37,9 @@ export function useUnavailableBookingSlots(barberId: string | null | undefined, 
       setError(rpcError.message);
       setUnavailableSlots([]);
     } else {
-      setUnavailableSlots((data ?? []).map((slot) => slot.booking_time));
+      setUnavailableSlots(
+        ((data ?? []) as UnavailableBookingSlot[]).map((slot) => slot.booking_time),
+      );
     }
     setLoading(false);
   }, [barberId, date]);

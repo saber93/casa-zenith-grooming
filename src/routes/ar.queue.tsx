@@ -4,6 +4,7 @@ import { QueuePage } from "@/components/casa/pages/QueuePage";
 import { buildPageHead } from "@/lib/seo";
 import { queueSearchValidator } from "@/lib/search-schemas";
 import { listBarbers, listServices } from "@/server/casa.functions";
+import { RequireModule } from "@/lib/business-context";
 
 export const Route = createFileRoute("/ar/queue")({
   validateSearch: queueSearchValidator,
@@ -24,5 +25,9 @@ export const Route = createFileRoute("/ar/queue")({
 function ArQueueRouteComponent() {
   const { services, barbers } = Route.useLoaderData();
   const { ticket } = Route.useSearch();
-  return <QueuePage lang="ar" services={services} barbers={barbers} ticket={ticket} />;
+  return (
+    <RequireModule module="walk_in_queue" lang="ar">
+      <QueuePage lang="ar" services={services} barbers={barbers} ticket={ticket} />
+    </RequireModule>
+  );
 }

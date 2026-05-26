@@ -3,9 +3,11 @@ import { CASA } from "@/lib/casa";
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import type { Lang } from "@/lib/i18n";
 import { t, localePath } from "@/lib/i18n";
+import { useBusinessContext } from "@/lib/business-context";
 
 export function Footer({ lang }: { lang: Lang }) {
   const tt = t(lang);
+  const business = useBusinessContext();
   return (
     <footer className="border-t border-border/60 bg-card">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 md:grid-cols-4 md:px-8">
@@ -47,22 +49,26 @@ export function Footer({ lang }: { lang: Lang }) {
                 {tt.nav.services}
               </Link>
             </li>
-            <li>
-              <Link
-                to={localePath(lang, "/products")}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {tt.nav.products}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={localePath(lang, "/reservation")}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {tt.nav.reservation}
-              </Link>
-            </li>
+            {business.isModuleEnabled("products_catalog") && (
+              <li>
+                <Link
+                  to={localePath(lang, "/products")}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  {tt.nav.products}
+                </Link>
+              </li>
+            )}
+            {business.isModuleEnabled("reservations") && (
+              <li>
+                <Link
+                  to={localePath(lang, "/reservation")}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  {tt.nav.reservation}
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 to={localePath(lang, "/app")}

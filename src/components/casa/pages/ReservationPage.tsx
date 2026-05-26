@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import type { Lang } from "@/lib/i18n";
 import { t, formatPrice } from "@/lib/i18n";
 import { bookingConflictMessage, isBookingConflictError } from "@/lib/bookings";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { ServiceRow } from "@/components/casa/ServiceCard";
 import { createBooking } from "@/server/casa.functions";
 
@@ -42,6 +43,7 @@ export function ReservationPage({
 }) {
   const tt = t(lang);
   const router = useRouter();
+  const terminology = useBusinessTerminology(lang);
 
   const initialService =
     services.find((s) => (lang === "ar" ? s.slug_ar : s.slug_en) === presetSlug) ?? services[0];
@@ -103,7 +105,7 @@ export function ReservationPage({
       });
     } catch (err) {
       const msg = isBookingConflictError(err)
-        ? bookingConflictMessage(lang)
+        ? bookingConflictMessage(err, lang)
         : err instanceof Error
           ? err.message
           : tt.common.error;
@@ -134,7 +136,7 @@ export function ReservationPage({
               <dd>{submitted.service}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-muted-foreground">{tt.reservation.barber}</dt>
+              <dt className="text-muted-foreground">{terminology.staffSingular}</dt>
               <dd>{submitted.barber}</dd>
             </div>
             <div className="flex justify-between">
@@ -187,7 +189,7 @@ export function ReservationPage({
             </div>
 
             <div className="space-y-2">
-              <Label>{tt.reservation.barber}</Label>
+              <Label>{terminology.staffSingular}</Label>
               <Select value={barberId} onValueChange={setBarberId}>
                 <SelectTrigger>
                   <SelectValue />
@@ -301,7 +303,7 @@ export function ReservationPage({
             )}
             <dl className="mt-6 space-y-3 border-t border-border/60 pt-5 text-sm">
               <div className="flex justify-between">
-                <dt className="text-muted-foreground">{tt.reservation.barber}</dt>
+                <dt className="text-muted-foreground">{terminology.staffSingular}</dt>
                 <dd>{selectedBarber ? barberLabel(selectedBarber) : "—"}</dd>
               </div>
               <div className="flex justify-between">

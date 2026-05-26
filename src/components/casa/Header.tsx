@@ -5,27 +5,59 @@ import type { Lang } from "@/lib/i18n";
 import { t, localePath } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/casa/LanguageSwitcher";
 import { useAuth } from "@/lib/auth-context";
+import { useBusinessContext } from "@/lib/business-context";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 
 export function Header({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
   const tt = t(lang);
   const { isAdmin, loading, signOut, user } = useAuth();
+  const business = useBusinessContext();
+  const terminology = useBusinessTerminology(lang);
   const { pathname } = useLocation();
   const loginHref = `${localePath(lang, "/login")}?redirect=${encodeURIComponent(pathname)}`;
 
   const nav = [
     { to: localePath(lang, "/"), label: tt.nav.home, exact: true },
     { to: localePath(lang, "/services"), label: tt.nav.services },
-    { to: localePath(lang, "/products"), label: tt.nav.products },
-    { to: localePath(lang, "/reservation"), label: tt.nav.reservation },
-    { to: localePath(lang, "/queue"), label: tt.nav.queue },
+    ...(business.isModuleEnabled("products_catalog")
+      ? [{ to: localePath(lang, "/products"), label: tt.nav.products }]
+      : []),
+    ...(business.isModuleEnabled("reservations")
+      ? [{ to: localePath(lang, "/reservation"), label: tt.nav.reservation }]
+      : []),
+    ...(business.isModuleEnabled("walk_in_queue")
+      ? [{ to: localePath(lang, "/queue"), label: tt.nav.queue }]
+      : []),
     { to: localePath(lang, "/app"), label: tt.nav.app },
     ...(isAdmin
       ? [
           { to: localePath(lang, "/admin/bookings"), label: tt.nav.admin },
-          { to: localePath(lang, "/admin/queue"), label: tt.queue.title },
-          { to: localePath(lang, "/admin/barber-workspace"), label: tt.barberWorkspace.title },
-          { to: localePath(lang, "/admin/queue-analytics"), label: tt.queueAnalytics.title },
+          ...(business.isModuleEnabled("walk_in_queue")
+            ? [{ to: localePath(lang, "/admin/queue"), label: tt.queue.title }]
+            : []),
+          ...(business.isModuleEnabled("barber_workspace")
+            ? [
+                {
+                  to: localePath(lang, "/admin/barber-workspace"),
+                  label: terminology.staffWorkspace,
+                },
+              ]
+            : []),
+          ...(business.isModuleEnabled("queue_analytics")
+            ? [
+                {
+                  to: localePath(lang, "/admin/queue-analytics"),
+                  label: tt.queueAnalytics.title,
+                },
+              ]
+            : []),
+          ...(business.isModuleEnabled("products_pos")
+            ? [{ to: localePath(lang, "/admin/product-sales"), label: tt.nav.productSales }]
+            : []),
+          { to: localePath(lang, "/admin/schedules"), label: tt.nav.schedules },
+          { to: localePath(lang, "/admin/packages"), label: tt.nav.packages },
+          { to: localePath(lang, "/admin/business-settings"), label: tt.nav.businessSettings },
         ]
       : []),
   ];
@@ -87,12 +119,14 @@ export function Header({ lang }: { lang: Lang }) {
                 {tt.nav.login}
               </a>
             ))}
-          <Link
-            to={localePath(lang, "/reservation")}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:shadow-glow hover:brightness-110"
-          >
-            {tt.cta.book}
-          </Link>
+          {business.isModuleEnabled("reservations") && (
+            <Link
+              to={localePath(lang, "/reservation")}
+              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:shadow-glow hover:brightness-110"
+            >
+              {tt.cta.book}
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -140,13 +174,15 @@ export function Header({ lang }: { lang: Lang }) {
                   {tt.nav.login}
                 </a>
               ))}
-            <Link
-              to={localePath(lang, "/reservation")}
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-3 text-sm font-medium text-primary-foreground"
-            >
-              {tt.cta.book}
-            </Link>
+            {business.isModuleEnabled("reservations") && (
+              <Link
+                to={localePath(lang, "/reservation")}
+                onClick={() => setOpen(false)}
+                className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-3 text-sm font-medium text-primary-foreground"
+              >
+                {tt.cta.book}
+              </Link>
+            )}
           </nav>
         </div>
       )}

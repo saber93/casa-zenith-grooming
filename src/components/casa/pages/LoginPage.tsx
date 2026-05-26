@@ -34,10 +34,12 @@ export function LoginPage({ lang, redirect }: { lang: Lang; redirect: string }) 
   const authConfigured = hasSupabaseClientEnv();
 
   useEffect(() => {
-    if (!auth.loading && auth.user && auth.isAdmin) {
-      router.navigate({ to: redirectTo });
+    if (!auth.loading && auth.user) {
+      router.navigate({
+        to: auth.mustChangePassword ? localePath(lang, "/admin/change-password") : redirectTo,
+      });
     }
-  }, [auth.loading, auth.user, auth.isAdmin, redirectTo, router]);
+  }, [auth.loading, auth.user, auth.mustChangePassword, lang, redirectTo, router]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -69,8 +71,12 @@ export function LoginPage({ lang, redirect }: { lang: Lang; redirect: string }) 
       });
       if (error) throw error;
       await auth.refreshAdmin();
+      await auth.refreshMustChangePassword();
+      const { data: mustChangePassword } = await supabase.rpc("get_must_change_password");
       toast.success(tt.login.success);
-      router.navigate({ to: redirectTo });
+      router.navigate({
+        to: mustChangePassword ? localePath(lang, "/admin/change-password") : redirectTo,
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : tt.common.error;
       toast.error(message);

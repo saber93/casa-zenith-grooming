@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AdminBookingsPage } from "@/components/casa/pages/AdminBookingsPage";
+import { RequireModule } from "@/lib/business-context";
 import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/bookings")({
@@ -10,5 +11,9 @@ export const Route = createFileRoute("/admin/bookings")({
       title: "Bookings Admin — Casa Gents Salon",
       description: "Manage Casa Gents Salon reservations and booking statuses.",
     }),
-  component: () => <AdminBookingsPage lang="en" />,
+  component: () => (
+    <RequireModule module="reservations" lang="en">
+      <AdminBookingsPage lang="en" />
+    </RequireModule>
+  ),
 });

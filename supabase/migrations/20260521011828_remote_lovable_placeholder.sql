@@ -1,0 +1,2 @@
+-- Placeholder for a migration already applied remotely by Lovable.
+-- Kept locally so Supabase CLI migration history remains aligned.

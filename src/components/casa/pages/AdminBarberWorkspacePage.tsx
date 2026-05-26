@@ -11,6 +11,7 @@ import {
   Play,
   RefreshCw,
   Scissors,
+  Shield,
   UserCheck,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -29,6 +30,9 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
+import { useRoleGuard } from "@/lib/auth/useRoleGuard";
+import { useBusinessContext } from "@/lib/business-context";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -110,8 +114,19 @@ const customerWhatsAppLink = (phone: string, message: string) =>
 
 export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
   const tt = t(lang);
+  const terminology = useBusinessTerminology(lang);
   const router = useRouter();
   const auth = useAuth();
+  const businessContext = useBusinessContext();
+  const { role: staffRole, assignedBarberId, isBarber: isBarberRole } = useRoleGuard();
+  const canAccess =
+    auth.isAdmin ||
+    ["business_owner", "business_admin", "business_manager", "barber"].includes(
+      businessContext.currentUserRole ?? "",
+    ) ||
+    isBarberRole;
+  const isBarberLocked = isBarberRole && !!assignedBarberId;
+  const business = businessContext.business;
   const [tickets, setTickets] = useState<QueueTicket[]>([]);
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [barbers, setBarbers] = useState<BarberRow[]>([]);
@@ -127,6 +142,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
 
   const loadWorkspace = useCallback(
     async (silent = false) => {
+      if (!business) return;
       if (!silent) {
         setLoading(true);
       }
@@ -136,6 +152,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
           supabase
             .from("queue_tickets")
             .select("*")
+            .eq("business_id", business.id)
             .eq("queue_date", todayIso())
             .in("status", ACTIVE_QUEUE_STATUSES)
             .order("queue_number", { ascending: true }),
@@ -143,10 +160,12 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
             .from("services")
             .select(
               "id, title_en, title_ar, default_duration_min, default_duration_max, duration_minutes",
-            ),
+            )
+            .eq("business_id", business.id),
           supabase
             .from("barbers")
             .select("id, name_en, name_ar, is_active")
+            .eq("business_id", business.id)
             .eq("is_active", true)
             .order("name_en", { ascending: true }),
         ]);
@@ -169,7 +188,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
         }
       }
     },
-    [tt.queue.loadError],
+    [business, tt.queue.loadError],
   );
 
   useEffect(() => {
@@ -177,10 +196,19 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
       router.navigate({ to: loginHref });
       return;
     }
-    if (!auth.loading && auth.user && auth.isAdmin) {
+    if (!auth.loading && auth.user && canAccess && !businessContext.loading) {
       void loadWorkspace();
     }
-  }, [auth.loading, auth.user, auth.isAdmin, loadWorkspace, loginHref, router]);
+  }, [
+    auth.loading,
+    auth.user,
+    canAccess,
+    isBarberRole,
+    businessContext.loading,
+    loadWorkspace,
+    loginHref,
+    router,
+  ]);
 
   useEffect(() => {
     if (barbers.length === 0) {
@@ -201,12 +229,18 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
   }, [barbers]);
 
   useEffect(() => {
+    if (isBarberLocked && assignedBarberId) {
+      setSelectedBarberId(assignedBarberId);
+    }
+  }, [isBarberLocked, assignedBarberId]);
+
+  useEffect(() => {
     if (!selectedBarberId || typeof window === "undefined") return;
     window.localStorage.setItem(BARBER_WORKSPACE_STORAGE_KEY, selectedBarberId);
   }, [selectedBarberId]);
 
   useEffect(() => {
-    if (!auth.user || !auth.isAdmin) return undefined;
+    if (!auth.user || !canAccess) return undefined;
 
     const channel = supabase
       .channel("admin-barber-workspace-queue")
@@ -223,7 +257,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
       window.clearInterval(refreshId);
       void supabase.removeChannel(channel);
     };
-  }, [auth.isAdmin, auth.user, loadWorkspace]);
+  }, [auth.user, canAccess, loadWorkspace]);
 
   useEffect(() => {
     const timerId = window.setInterval(() => setNowMs(Date.now()), 30_000);
@@ -320,11 +354,17 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
     const actionKey = `${action}:${ticket.id}`;
     setBusyKey(actionKey);
     try {
-      const { error } = await supabase.rpc("admin_queue_action", {
-        p_ticket_id: ticket.id,
-        p_action: action,
-        p_barber_id: null,
-      });
+      const { error } = isBarberRole
+        ? await supabase.rpc("staff_queue_action", {
+            p_ticket_id: ticket.id,
+            p_action: action,
+            p_barber_id: assignedBarberId || undefined,
+          })
+        : await supabase.rpc("admin_queue_action", {
+            p_ticket_id: ticket.id,
+            p_action: action,
+            p_barber_id: undefined,
+          });
       if (error) throw error;
       toast.success(
         action === "complete" ? tt.barberWorkspace.completeSuccess : tt.queue.actionDone,
@@ -349,7 +389,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
 
   if (auth.loading) {
     return (
-      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={tt.barberWorkspace.title}>
+      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={terminology.staffWorkspace}>
         <p className="text-sm text-muted-foreground">{tt.common.loading}</p>
       </Section>
     );
@@ -357,7 +397,7 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
 
   if (!auth.user) {
     return (
-      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={tt.barberWorkspace.title}>
+      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={terminology.staffWorkspace}>
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>{tt.nav.login}</AlertTitle>
@@ -370,9 +410,9 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
     );
   }
 
-  if (!auth.isAdmin) {
+  if (!canAccess) {
     return (
-      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={tt.barberWorkspace.title}>
+      <Section lang={lang} eyebrow={tt.admin.eyebrow} title={terminology.staffWorkspace}>
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>{tt.common.error}</AlertTitle>
@@ -389,16 +429,33 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
     <Section
       lang={lang}
       eyebrow={tt.admin.eyebrow}
-      title={tt.barberWorkspace.title}
+      title={terminology.staffWorkspace}
       intro={tt.barberWorkspace.intro}
       className="py-8 md:py-14"
     >
       <div data-testid="barber-workspace" className="mx-auto max-w-3xl space-y-5">
+        {isBarberLocked && selectedBarber && (
+          <div className="rounded-lg border border-primary/30 bg-primary/10 p-4 flex items-center gap-3">
+            <Shield className="h-5 w-5 text-primary shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-primary">
+                {lang === "ar"
+                  ? `أنت تعمل كـ ${selectedBarber.name_ar}`
+                  : `You are operating as ${selectedBarber.name_en}`}
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {lang === "ar"
+                  ? "عرضك مقيد بمساحة عملك المعينة."
+                  : "Your view is locked to your assigned workspace."}
+              </p>
+            </div>
+          </div>
+        )}
         <div className="flex flex-col gap-3 rounded-lg border border-border/60 bg-card p-4">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                {tt.barberWorkspace.selectBarber}
+                {terminology.selectStaff}
               </p>
               <h2 className="font-serif text-2xl">
                 {selectedBarber
@@ -427,7 +484,11 @@ export function AdminBarberWorkspacePage({ lang }: { lang: Lang }) {
           </div>
 
           {barbers.length > 0 ? (
-            <Select value={selectedBarberId} onValueChange={setSelectedBarberId}>
+            <Select
+              value={selectedBarberId}
+              onValueChange={setSelectedBarberId}
+              disabled={isBarberLocked}
+            >
               <SelectTrigger data-testid="barber-workspace-selector" className="h-12">
                 <SelectValue />
               </SelectTrigger>

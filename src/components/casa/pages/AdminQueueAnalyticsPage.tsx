@@ -22,6 +22,8 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
+import { useBusinessContext } from "@/lib/business-context";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -156,6 +158,14 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
   const tt = t(lang);
   const router = useRouter();
   const auth = useAuth();
+  const businessContext = useBusinessContext();
+  const terminology = useBusinessTerminology(lang);
+  const business = businessContext.business;
+  const canAccess =
+    auth.isAdmin ||
+    ["business_owner", "business_admin", "business_manager"].includes(
+      businessContext.currentUserRole ?? "",
+    );
   const [tickets, setTickets] = useState<QueueTicket[]>([]);
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [barbers, setBarbers] = useState<BarberRow[]>([]);
@@ -182,6 +192,7 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
   }, [customEnd, customStart, rangePreset]);
 
   const loadAnalytics = useCallback(async () => {
+    if (!business) return;
     setLoading(true);
     setLoadError(null);
     try {
@@ -189,14 +200,19 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
         supabase
           .from("queue_tickets")
           .select(QUEUE_ANALYTICS_SELECT)
+          .eq("business_id", business.id)
           .gte("queue_date", dateRange.start)
           .lte("queue_date", dateRange.end)
           .order("queue_date", { ascending: false })
           .order("created_at", { ascending: true }),
         supabase
           .from("services")
-          .select("id, title_en, title_ar, default_duration_max, duration_minutes"),
-        supabase.from("barbers").select("id, name_en, name_ar, is_active"),
+          .select("id, title_en, title_ar, default_duration_max, duration_minutes")
+          .eq("business_id", business.id),
+        supabase
+          .from("barbers")
+          .select("id, name_en, name_ar, is_active")
+          .eq("business_id", business.id),
       ]);
 
       if (ticketResult.error) throw ticketResult.error;
@@ -213,17 +229,25 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
     } finally {
       setLoading(false);
     }
-  }, [dateRange.end, dateRange.start, tt.queue.loadError]);
+  }, [business, dateRange.end, dateRange.start, tt.queue.loadError]);
 
   useEffect(() => {
     if (!auth.loading && !auth.user) {
       router.navigate({ to: loginHref });
       return;
     }
-    if (!auth.loading && auth.user && auth.isAdmin) {
+    if (!auth.loading && auth.user && canAccess && !businessContext.loading) {
       void loadAnalytics();
     }
-  }, [auth.loading, auth.user, auth.isAdmin, loadAnalytics, loginHref, router]);
+  }, [
+    auth.loading,
+    auth.user,
+    canAccess,
+    businessContext.loading,
+    loadAnalytics,
+    loginHref,
+    router,
+  ]);
 
   const serviceById = useMemo(
     () => new Map(services.map((service) => [service.id, service])),
@@ -398,7 +422,11 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
       items.push(tt.queueAnalytics.suggestions.noShowHigh);
     }
     if ((analytics.averageWait ?? 0) >= 30) {
-      items.push(tt.queueAnalytics.suggestions.waitHigh);
+      items.push(
+        lang === "ar"
+          ? `متوسط الانتظار مرتفع. ننصح بإضافة ${terminology.staffSingular} آخر خلال ساعات الذروة.`
+          : `Average wait is high. Consider adding one more ${terminology.staffSingular.toLowerCase()} during peak hours.`,
+      );
     }
     const topBarber = barberMetrics[0];
     const secondBarber = barberMetrics[1];
@@ -408,13 +436,21 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
       topBarber.total >= secondBarber.total * 2 &&
       topBarber.total >= 4
     ) {
-      items.push(tt.queueAnalytics.suggestions.barberOverloaded);
+      items.push(
+        lang === "ar"
+          ? `أحد ${terminology.staffPlural} يتعامل مع حجم أكبر من الأدوار مقارنة بالبقية.`
+          : `One ${terminology.staffSingular.toLowerCase()} is handling more queue volume than others.`,
+      );
     }
     if (analytics.missingTimingCount >= 2) {
-      items.push(tt.queueAnalytics.suggestions.timingMissing);
+      items.push(
+        lang === "ar"
+          ? `اطلب من ${terminology.staffPlural} استخدام بدء الخدمة وإنهاء الخدمة باستمرار.`
+          : `Ask ${terminology.staffPlural.toLowerCase()} to use Start Service and Complete Service consistently.`,
+      );
     }
     return items.length > 0 ? items : [tt.queueAnalytics.suggestions.stable];
-  }, [analytics, barberMetrics, tt.queueAnalytics.suggestions]);
+  }, [analytics, barberMetrics, lang, terminology, tt.queueAnalytics.suggestions]);
 
   const setPreset = (preset: RangePreset) => {
     setRangePreset(preset);
@@ -443,7 +479,7 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
     );
   }
 
-  if (!auth.isAdmin) {
+  if (!canAccess) {
     return (
       <Section lang={lang} eyebrow={tt.admin.eyebrow} title={tt.queueAnalytics.title}>
         <Alert variant="destructive">
@@ -574,7 +610,11 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
                 value={formatMinutes(analytics.averageServiceDuration, lang)}
               />
               <KpiCard
-                label={tt.queueAnalytics.activeBarbers}
+                label={
+                  lang === "ar"
+                    ? `${terminology.staffPlural} النشطون`
+                    : `Active ${terminology.staffPlural}`
+                }
                 value={formatNumber(analytics.activeBarbers, lang)}
               />
               <KpiCard
@@ -591,7 +631,7 @@ export function AdminQueueAnalyticsPage({ lang }: { lang: Lang }) {
               <>
                 <div className="grid gap-6 xl:grid-cols-2">
                   <AnalyticsPanel
-                    title={tt.queueAnalytics.barberPerformance}
+                    title={terminology.staffPerformance}
                     icon={<Scissors className="h-5 w-5" />}
                   >
                     {barberMetrics.length === 0 ? (

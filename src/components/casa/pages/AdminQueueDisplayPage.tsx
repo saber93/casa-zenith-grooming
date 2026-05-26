@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
+import { useBusinessContext } from "@/lib/business-context";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import { CASA } from "@/lib/casa";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
@@ -56,6 +58,20 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
   const tt = t(lang);
   const router = useRouter();
   const auth = useAuth();
+  const businessContext = useBusinessContext();
+  const terminology = useBusinessTerminology(lang);
+  const business = businessContext.business;
+  const canAccess =
+    auth.isAdmin ||
+    [
+      "business_owner",
+      "business_admin",
+      "business_manager",
+      "reception",
+      "cashier",
+      "barber",
+      "viewer",
+    ].includes(businessContext.currentUserRole ?? "");
   const [tickets, setTickets] = useState<QueueTicket[]>([]);
   const [barbers, setBarbers] = useState<BarberRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -68,6 +84,7 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
 
   const loadDisplay = useCallback(
     async (silent = false) => {
+      if (!business) return;
       if (!silent) setLoading(true);
       setLoadError(null);
       try {
@@ -77,10 +94,15 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
             .select(
               "id, barber_id, created_at, estimated_wait_min, estimated_wait_max, queue_number, status",
             )
+            .eq("business_id", business.id)
             .eq("queue_date", todayIso())
             .in("status", ACTIVE_STATUSES)
             .order("queue_number", { ascending: true }),
-          supabase.from("barbers").select("id, is_active").eq("is_active", true),
+          supabase
+            .from("barbers")
+            .select("id, is_active")
+            .eq("business_id", business.id)
+            .eq("is_active", true),
         ]);
 
         if (ticketResult.error) throw ticketResult.error;
@@ -97,7 +119,7 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
         if (!silent) setLoading(false);
       }
     },
-    [tt.queue.loadError],
+    [business, tt.queue.loadError],
   );
 
   useEffect(() => {
@@ -105,13 +127,13 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
       router.navigate({ to: loginHref });
       return;
     }
-    if (!auth.loading && auth.user && auth.isAdmin) {
+    if (!auth.loading && auth.user && canAccess && !businessContext.loading) {
       void loadDisplay();
     }
-  }, [auth.loading, auth.user, auth.isAdmin, loadDisplay, loginHref, router]);
+  }, [auth.loading, auth.user, canAccess, businessContext.loading, loadDisplay, loginHref, router]);
 
   useEffect(() => {
-    if (!auth.user || !auth.isAdmin) return undefined;
+    if (!auth.user || !canAccess) return undefined;
 
     const channel = supabase
       .channel("admin-queue-display")
@@ -128,7 +150,7 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
       window.clearInterval(refreshId);
       void supabase.removeChannel(channel);
     };
-  }, [auth.isAdmin, auth.user, loadDisplay]);
+  }, [auth.user, canAccess, loadDisplay]);
 
   useEffect(() => {
     const timeId = window.setInterval(() => setNowMs(Date.now()), 1_000);
@@ -198,7 +220,7 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
     );
   }
 
-  if (!auth.isAdmin) {
+  if (!canAccess) {
     return (
       <DisplayShell lang={lang}>
         <Alert variant="destructive" className="mx-auto max-w-xl">
@@ -275,7 +297,11 @@ export function AdminQueueDisplayPage({ lang }: { lang: Lang }) {
               icon={<Users className="h-8 w-8" />}
             />
             <DisplayStatCard
-              label={tt.queueDisplay.activeBarbers}
+              label={
+                lang === "ar"
+                  ? `${terminology.staffPlural} النشطون`
+                  : `Active ${terminology.staffPlural}`
+              }
               value={String(stats.activeBarbersCount)}
               icon={<Scissors className="h-8 w-8" />}
             />

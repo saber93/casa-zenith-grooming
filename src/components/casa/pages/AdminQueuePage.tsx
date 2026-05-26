@@ -25,6 +25,8 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
+import { useBusinessContext } from "@/lib/business-context";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { Lang } from "@/lib/i18n";
 import { localePath, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -79,6 +81,14 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
   const tt = t(lang);
   const router = useRouter();
   const auth = useAuth();
+  const businessContext = useBusinessContext();
+  const terminology = useBusinessTerminology(lang);
+  const business = businessContext.business;
+  const canAccess =
+    auth.isAdmin ||
+    ["business_owner", "business_admin", "business_manager", "reception", "cashier"].includes(
+      businessContext.currentUserRole ?? "",
+    );
   const [tickets, setTickets] = useState<QueueTicket[]>([]);
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [barbers, setBarbers] = useState<BarberRow[]>([]);
@@ -91,6 +101,7 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
   )}`;
 
   const loadQueue = useCallback(async () => {
+    if (!business) return;
     setLoading(true);
     setLoadError(null);
     try {
@@ -98,10 +109,11 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
         supabase
           .from("queue_tickets")
           .select("*")
+          .eq("business_id", business.id)
           .eq("queue_date", todayIso())
           .order("queue_number", { ascending: true }),
-        supabase.from("services").select("id, title_en, title_ar"),
-        supabase.from("barbers").select("id, name_en, name_ar"),
+        supabase.from("services").select("id, title_en, title_ar").eq("business_id", business.id),
+        supabase.from("barbers").select("id, name_en, name_ar").eq("business_id", business.id),
       ]);
 
       if (ticketResult.error) throw ticketResult.error;
@@ -118,20 +130,20 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
     } finally {
       setLoading(false);
     }
-  }, [tt.queue.loadError]);
+  }, [business, tt.queue.loadError]);
 
   useEffect(() => {
     if (!auth.loading && !auth.user) {
       router.navigate({ to: loginHref });
       return;
     }
-    if (!auth.loading && auth.user && auth.isAdmin) {
+    if (!auth.loading && auth.user && canAccess && !businessContext.loading) {
       void loadQueue();
     }
-  }, [auth.loading, auth.user, auth.isAdmin, loadQueue, loginHref, router]);
+  }, [auth.loading, auth.user, canAccess, businessContext.loading, loadQueue, loginHref, router]);
 
   useEffect(() => {
-    if (!auth.user || !auth.isAdmin) return undefined;
+    if (!auth.user || !canAccess) return undefined;
 
     const channel = supabase
       .channel("admin-queue-tickets")
@@ -143,7 +155,7 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [auth.isAdmin, auth.user, loadQueue]);
+  }, [auth.user, canAccess, loadQueue]);
 
   const serviceName = useCallback(
     (serviceId: string | null) => {
@@ -156,9 +168,13 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
   const barberName = useCallback(
     (barberId: string | null) => {
       const barber = barbers.find((item) => item.id === barberId);
-      return barber ? (lang === "ar" ? barber.name_ar : barber.name_en) : tt.admin.noBarber;
+      return barber
+        ? lang === "ar"
+          ? barber.name_ar
+          : barber.name_en
+        : terminology.anyAvailableStaff;
     },
-    [barbers, lang, tt.admin.noBarber],
+    [barbers, lang, terminology.anyAvailableStaff],
   );
 
   const groups = useMemo(() => {
@@ -176,9 +192,12 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
 
     const unassigned = (grouped.get("__none__") ?? []).sort(sortQueue);
     return unassigned.length > 0
-      ? [...knownGroups, { key: "__none__", label: tt.admin.noBarber, tickets: unassigned }]
+      ? [
+          ...knownGroups,
+          { key: "__none__", label: terminology.anyAvailableStaff, tickets: unassigned },
+        ]
       : knownGroups;
-  }, [barbers, lang, tickets, tt.admin.noBarber]);
+  }, [barbers, lang, terminology.anyAvailableStaff, tickets]);
 
   const runAction = async (ticket: QueueTicket, action: QueueAction, barberId?: string) => {
     setBusyId(ticket.id);
@@ -186,7 +205,7 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
       const { error } = await supabase.rpc("admin_queue_action", {
         p_ticket_id: ticket.id,
         p_action: action,
-        p_barber_id: barberId ?? null,
+        p_barber_id: barberId || undefined,
       });
       if (error) throw error;
       toast.success(tt.queue.actionDone);
@@ -238,7 +257,7 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
     );
   }
 
-  if (!auth.isAdmin) {
+  if (!canAccess) {
     return (
       <Section lang={lang} eyebrow={tt.admin.eyebrow} title={tt.queue.title}>
         <Alert variant="destructive">
@@ -326,7 +345,11 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
                       <TableHead>{tt.queue.startedAt}</TableHead>
                       <TableHead>{tt.queue.completedAt}</TableHead>
                       <TableHead>{tt.queue.actualMinutes}</TableHead>
-                      <TableHead>{tt.queue.actions.reassign}</TableHead>
+                      <TableHead>
+                        {lang === "ar"
+                          ? `تغيير ${terminology.staffSingular}`
+                          : `Reassign ${terminology.staffSingular}`}
+                      </TableHead>
                       <TableHead>{tt.admin.cols.actions}</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -349,8 +372,8 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
                         <TableCell className="min-w-40">{serviceName(ticket.service_id)}</TableCell>
                         <TableCell className="min-w-36">
                           {ticket.mode === "specific_barber"
-                            ? tt.queue.specificBarber
-                            : tt.queue.anyBarber}
+                            ? terminology.specificStaff
+                            : terminology.anyAvailableStaff}
                         </TableCell>
                         <TableCell>
                           <Badge
@@ -386,7 +409,14 @@ export function AdminQueuePage({ lang }: { lang: Lang }) {
                               ["completed", "cancelled", "no_show"].includes(ticket.status)
                             }
                           >
-                            <SelectTrigger className="w-40" aria-label={tt.queue.actions.reassign}>
+                            <SelectTrigger
+                              className="w-40"
+                              aria-label={
+                                lang === "ar"
+                                  ? `تغيير ${terminology.staffSingular}`
+                                  : `Reassign ${terminology.staffSingular}`
+                              }
+                            >
                               <SelectValue placeholder={barberName(ticket.barber_id)} />
                             </SelectTrigger>
                             <SelectContent>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { AdminQueueAnalyticsPage } from "@/components/casa/pages/AdminQueueAnalyticsPage";
+import { RequireModule } from "@/lib/business-context";
 import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/queue-analytics")({
@@ -11,5 +12,9 @@ export const Route = createFileRoute("/admin/queue-analytics")({
       title: "Queue Analytics — Casa Gents Salon",
       description: "Operational queue and service timing insights for Casa salon.",
     }),
-  component: () => <AdminQueueAnalyticsPage lang="en" />,
+  component: () => (
+    <RequireModule module="queue_analytics" lang="en">
+      <AdminQueueAnalyticsPage lang="en" />
+    </RequireModule>
+  ),
 });

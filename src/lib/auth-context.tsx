@@ -7,7 +7,9 @@ export type AuthCtx = {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
+  mustChangePassword: boolean;
   refreshAdmin: () => Promise<void>;
+  refreshMustChangePassword: () => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -17,6 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [mustChangePassword, setMustChangePassword] = useState(false);
 
   const checkAdmin = async (uid: string | undefined) => {
     if (!uid) {
@@ -28,12 +31,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .from("user_roles")
         .select("role")
         .eq("user_id", uid)
-        .eq("role", "admin")
+        .in("role", ["admin", "platform_admin"])
         .maybeSingle();
       setIsAdmin(!!data);
     } catch (error) {
       console.error("[Auth] Unable to check admin role.", error);
       setIsAdmin(false);
+    }
+  };
+
+  const checkMustChangePassword = async (uid: string | undefined) => {
+    if (!uid) {
+      setMustChangePassword(false);
+      return;
+    }
+    try {
+      const { data, error } = await supabase.rpc("get_must_change_password");
+      if (error) throw error;
+      setMustChangePassword(data === true);
+    } catch (error) {
+      console.warn("[Auth] Unable to check password-change flag.", error);
+      setMustChangePassword(false);
     }
   };
 
@@ -51,7 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(s);
         // Defer admin check to avoid recursion inside auth callback.
         setTimeout(() => {
-          checkAdmin(s?.user?.id);
+          void checkAdmin(s?.user?.id);
+          void checkMustChangePassword(s?.user?.id);
         }, 0);
       });
 
@@ -59,7 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .getSession()
         .then(({ data: { session: s } }) => {
           setSession(s);
-          checkAdmin(s?.user?.id).finally(() => setLoading(false));
+          Promise.all([checkAdmin(s?.user?.id), checkMustChangePassword(s?.user?.id)]).finally(() =>
+            setLoading(false),
+          );
         })
         .catch((error) => {
           console.error("[Auth] Unable to load session.", error);
@@ -78,9 +99,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!hasSupabaseClientEnv()) return;
     await checkAdmin(session?.user?.id);
   };
+  const refreshMustChangePassword = async () => {
+    if (!hasSupabaseClientEnv()) return;
+    await checkMustChangePassword(session?.user?.id);
+  };
   const signOut = async () => {
     if (!hasSupabaseClientEnv()) return;
     await supabase.auth.signOut();
+    setMustChangePassword(false);
   };
 
   return (
@@ -90,7 +116,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         session,
         loading,
         isAdmin,
+        mustChangePassword,
         refreshAdmin,
+        refreshMustChangePassword,
         signOut,
       }}
     >

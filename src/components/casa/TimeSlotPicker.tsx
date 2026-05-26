@@ -3,6 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 import { useUnavailableBookingSlots } from "@/hooks/use-unavailable-booking-slots";
+import { useBusinessTerminology } from "@/lib/business-terminology";
 import type { Lang } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,7 @@ export function TimeSlotPicker({
   slots = DEFAULT_BOOKING_SLOTS,
 }: TimeSlotPickerProps) {
   const tt = t(lang);
+  const terminology = useBusinessTerminology(lang);
   const { unavailableSlots, loading, error } = useUnavailableBookingSlots(barberId, date);
   const unavailableSet = useMemo(() => new Set(unavailableSlots), [unavailableSlots]);
   const availableCount = slots.filter((time) => !unavailableSet.has(time)).length;
@@ -107,7 +109,11 @@ export function TimeSlotPicker({
         </p>
       )}
       {barberId && date && availableCount === 0 && !loading && (
-        <p className="text-xs text-muted-foreground">{tt.reservation.noAvailableSlots}</p>
+        <p className="text-xs text-muted-foreground">
+          {lang === "ar"
+            ? `لا توجد أوقات متاحة لهذا ${terminology.staffSingular} في هذا التاريخ.`
+            : `No available times for this ${terminology.staffSingular.toLowerCase()} on this date.`}
+        </p>
       )}
     </div>
   );

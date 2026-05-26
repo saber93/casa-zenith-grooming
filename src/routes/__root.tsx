@@ -12,6 +12,7 @@ import { Footer } from "@/components/casa/Footer";
 import { WhatsAppFab } from "@/components/casa/WhatsAppFab";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
+import { BusinessProvider } from "@/lib/business-context";
 import type { Lang } from "@/lib/i18n";
 import { dirForLang } from "@/lib/i18n";
 
@@ -115,23 +116,26 @@ function RootComponent() {
   const lang = useRouterState({
     select: (state) => langFromPathname(state.location.pathname),
   });
-  const isQueueDisplay = useRouterState({
-    select: (state) =>
-      state.location.pathname === "/admin/queue-display" ||
-      state.location.pathname === "/ar/admin/queue-display",
+  const hideHeaderFooter = useRouterState({
+    select: (state) => {
+      const p = state.location.pathname;
+      return p.startsWith("/admin") || p.startsWith("/ar/admin");
+    },
   });
 
   return (
     <AuthProvider>
-      <div className="flex min-h-screen flex-col bg-background text-foreground">
-        {!isQueueDisplay && <Header lang={lang} />}
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        {!isQueueDisplay && <Footer lang={lang} />}
-        {!isQueueDisplay && <WhatsAppFab lang={lang} />}
-        <Toaster theme="dark" />
-      </div>
+      <BusinessProvider>
+        <div className="flex min-h-screen flex-col bg-background text-foreground">
+          {!hideHeaderFooter && <Header lang={lang} />}
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          {!hideHeaderFooter && <Footer lang={lang} />}
+          {!hideHeaderFooter && <WhatsAppFab lang={lang} />}
+          <Toaster theme="dark" />
+        </div>
+      </BusinessProvider>
     </AuthProvider>
   );
 }

@@ -9,7 +9,14 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:financial": "playwright test tests/financial",
+    "test:uat": "playwright test tests/uat",
+    "demo:uat:create": "node scripts/uat-demo.mjs create",
+    "demo:uat:cleanup": "node scripts/uat-demo.mjs cleanup",
+    "demo:owner:create": "node scripts/owner-demo-seed.mjs create",
+    "demo:owner:cleanup": "node scripts/owner-demo-seed.mjs cleanup",
+    "demo:owner:verify": "node scripts/owner-demo-seed.mjs verify"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
@@ -72,7 +79,9 @@
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "^1.4.0",
     "@netlify/vite-plugin-tanstack-start": "^1.3.9",
+    "@playwright/test": "^1.60.0",
     "@types/node": "^22.16.5",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
@@ -83,6 +92,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+    "pg": "^8.21.0",
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
